@@ -173,7 +173,9 @@ import gaussian as g
 
 model = af.Model(g.Gaussian)
 
-emcee = af.Emcee(name="tutorial_4_visualization", path_prefix="howtofit")
+emcee = af.Emcee(
+    name="tutorial_4_visualization", path_prefix=path.join("howtofit", "chapter_1")
+)
 
 analysis = Analysis(data=data, noise_map=noise_map)
 

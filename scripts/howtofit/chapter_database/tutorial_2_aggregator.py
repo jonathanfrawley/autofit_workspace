@@ -18,19 +18,12 @@ from os import path
 import autofit as af
 
 """
-We now load the results in the `output` folder into a sqlite database using the `Aggregator`. We simply point to the 
-path where we want the database to be created and add the directory `autofit_workspace/output/howtofit/database`.
-
-Checkout the output folder, you should see a `database.sqlite` file which contains the model-fits to the 3 `Gaussian`
-datasets.
+First, note how the results are not contained in the `output` folder after each search completes. Instead, they are
+contained in the `database_howtofit.sqlite` file, which we can load using the `Aggregator`.
 """
 from autofit.database.aggregator import Aggregator
 
-agg = Aggregator.from_database(
-    path.join("output", "howtofit", "database", "database.sqlite")
-)
-
-agg.add_directory(path.join("output", "howtofit", "database"))
+agg = Aggregator.from_database("database_howtofit.sqlite")
 
 """
 Before using the aggregator to inspect results, let me quickly cover Python generators. A generator is an object that 

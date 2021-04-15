@@ -74,7 +74,9 @@ class Analysis(af.Analysis):
         residual_map = self.data - model_data
         chi_squared_map = (residual_map / self.noise_map) ** 2.0
 
-        """The visualizer now outputs images of the best-fit results to hard-disk (checkout `visualizer.py`)."""
+        """
+        The visualizer now outputs images of the best-fit results to hard-disk (checkout `visualizer.py`).
+        """
 
         plot_line(
             xvalues=xvalues,
@@ -125,5 +127,4 @@ class Analysis(af.Analysis):
         # module in Python, which serializes the data on to the hard-disk.
 
         paths.save_object("data", self.data)
-
         paths.save_object("data", self.noise_map)

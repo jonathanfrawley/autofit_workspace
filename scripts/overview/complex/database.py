@@ -30,9 +30,7 @@ noise_map = af.util.numpy_array_from_json(
     file_path=path.join(dataset_path, "noise_map.json")
 )
 
-session = af.db.open_database(
-    "database.sqlite"
-)
+session = af.db.open_database("database.sqlite")
 
 """
 Now lets plot the data, including its error bars. We'll use its shape to determine the xvalues of the
@@ -143,7 +141,7 @@ dynesty = af.DynestyStatic(
     max_move=100,
     iterations_per_update=500,
     number_of_cores=1,
-    session=session
+    session=session,
 )
 
 """
@@ -213,7 +211,7 @@ emcee = af.Emcee(
     auto_correlation_required_length=50,
     auto_correlation_change_threshold=0.01,
     number_of_cores=1,
-    session=session
+    session=session,
 )
 
 result = emcee.fit(model=model, analysis=analysis)
@@ -275,7 +273,7 @@ pso = af.PySwarmsLocal(
     ftol=-np.inf,
     initializer=af.InitializerPrior(),
     number_of_cores=1,
-    session=session
+    session=session,
 )
 result = pso.fit(model=model, analysis=analysis)
 

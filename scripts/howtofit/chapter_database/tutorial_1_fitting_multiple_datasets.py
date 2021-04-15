@@ -193,7 +193,17 @@ database. For example, below we write info on the dataset`s (hypothetical) data 
 info = {"date_of_observation": "01-02-18", "exposure_time": 1000.0}
 
 """
+___Session__
+
+To output results directly to the database, we start a session, which includes the name of the database `.sqlite` file
+where results are stored.
+"""
+session = af.db.open_database("database_howtofit.sqlite")
+
+"""
 This for loop runs over every dataset, checkout the comments below for how we set up the path structure.
+
+Note how the `session` is passed to the `DynestyStatic` search.
 """
 for dataset_name in dataset_names:
 
@@ -212,28 +222,28 @@ for dataset_name in dataset_names:
     """
     In all examples so far, results have gone to the default output path, which was the `autofit_workspace/output` 
     folder and a folder named after the non linear search. In this example, we will repeat this process and then load
-    these results into the database and a `database.sqlite` file.
+    these results into the database and a `database_howtofit.sqlite` file.
 
-    However, results can be written directly to the `database.sqlite` file omitted hard-disc output entirely, which
-    can be important for performing large model-fitting tasks on high performance computing facilities where there
-    may be limits on the number of files allowed. The commented out code below shows how one would perform
+    However, results can be written directly to the `database_howtofit.sqlite` file omitted hard-disc output entirely, 
+    which can be important for performing large model-fitting tasks on high performance computing facilities where 
+    there may be limits on the number of files allowed. The commented out code below shows how one would perform
     direct output to the `.sqlite` file. 
 
     [NOTE: direct writing to .sqlite not supported yet, so this fit currently outputs to hard-disc as per usual and
     these outputs will be used to make the database.]
     """
-    emcee = af.DynestyStatic(
-        path_prefix=path.join("howtofit", "database", dataset_name)
+    dynesty = af.DynestyStatic(
+        path_prefix=path.join("howtofit", "chapter_database", dataset_name)
     )
 
     print(
         f"Emcee has begun running, checkout \n"
-        f"autofit_workspace/output/howtofit/database/{dataset_name}/tutorial_7_multi folder for live \n"
+        f"autofit_workspace/output/howtofit/database/{dataset_name}/tutorial_1_fitting_multiple_datasets folder for live \n"
         f"output of the results. This Jupyter notebook cell with progress once Emcee has completed, this could take a \n"
         f"few minutes!"
     )
 
-    emcee.fit(model=model, analysis=analysis, info=info)
+    dynesty.fit(model=model, analysis=analysis, info=info)
 
 """
 Checkout the output folder, you should see three new sets of results corresponding to our 3 `Gaussian` datasets.

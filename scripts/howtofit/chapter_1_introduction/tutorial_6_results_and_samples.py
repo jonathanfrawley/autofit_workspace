@@ -153,7 +153,10 @@ model = af.Collection(gaussian=p.Gaussian)
 
 analysis = Analysis(data=data, noise_map=noise_map)
 
-emcee = af.Emcee(name="tutorial_6_results_and_samples", path_prefix="howtofit")
+emcee = af.Emcee(
+    name="tutorial_6_results_and_samples",
+    path_prefix=path.join("howtofit", "chapter_1"),
+)
 
 print(
     "Emcee has begun running. \n"

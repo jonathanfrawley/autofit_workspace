@@ -10,6 +10,12 @@ Information about PySwarms can be found at the following links:
  - https://pyswarms.readthedocs.io/en/latest/index.html
  - https://pyswarms.readthedocs.io/en/latest/api/pyswarms.single.html#module-pyswarms.single.global_best
 """
+# %matplotlib inline
+# from pyprojroot import here
+# workspace_path = str(here())
+# %cd $workspace_path
+# print(f"Working Directory has been set to `{workspace_path}`")
+
 import autofit as af
 import model as m
 import analysis as a

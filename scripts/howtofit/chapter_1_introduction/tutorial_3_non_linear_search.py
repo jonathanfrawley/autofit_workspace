@@ -154,7 +154,9 @@ model.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=50.0)
 
 analysis = Analysis(data=data, noise_map=noise_map)
 
-emcee = af.Emcee(name="tutorial_3_non_linear_search", path_prefix="howtofit")
+emcee = af.Emcee(
+    name="tutorial_3_non_linear_search", path_prefix=path.join("howtofit", "chapter_1")
+)
 
 """
 We begin the `NonLinearSearch` by calling its `fit` method. This will take a minute or so to run (which is very fast 

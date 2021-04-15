@@ -10,6 +10,12 @@ Information about MultiNest can be found at the following links:
  - https://github.com/JohannesBuchner/PyMultiNest
  - http://johannesbuchner.github.io/PyMultiNest/index.html#
 """
+# %matplotlib inline
+# from pyprojroot import here
+# workspace_path = str(here())
+# %cd $workspace_path
+# print(f"Working Directory has been set to `{workspace_path}`")
+
 import autofit as af
 import model as m
 import analysis as a

@@ -69,7 +69,17 @@ model.gaussian.sigma = af.GaussianPrior(
 )
 
 """
+___Session__
+
+To output results directly to the database, we start a session, which includes the name of the database `.sqlite` file
+where results are stored.
+"""
+session = af.db.open_database("database.sqlite")
+
+"""
 This for loop runs over every dataset, checkout the comments below for how we set up the database entry of each fit.
+
+Note how the `session` is passed to the `Emcee` search.
 """
 for dataset_name in dataset_names:
 
@@ -99,7 +109,7 @@ for dataset_name in dataset_names:
     these outputs will be used to make the database.]
     """
     emcee = af.Emcee(
-        paths=af.DirectoryPaths(path_prefix=path.join("features", "database", dataset_name)),
+        path_prefix=path.join("features", "database", dataset_name),
         nwalkers=30,
         nsteps=1000,
         initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
@@ -110,6 +120,7 @@ for dataset_name in dataset_names:
             change_threshold=0.01,
         ),
         number_of_cores=1,
+        session=session,
     )
 
     # INSERT CODE HERE.
@@ -124,21 +135,12 @@ for dataset_name in dataset_names:
 print("Emcee has finished run - you may now continue the notebook.")
 
 """
-We now load the results in the `output` folder into a sqlite database using the `Aggregator`. We simply point to the 
-path where we want the database to be created and add the directory `autofit_workspace/output/features/database`.
-
-Checkout the output folder, you should see a `database.sqlite` file which contains the model-fits to the 3 `Gaussian`
-datasets.
+First, note how the results are not contained in the `output` folder after each search completes. Instead, they are
+contained in the `database.sqlite` file, which we can load using the `Aggregator`.
 """
 from autofit.database.aggregator import Aggregator
 
-database_file = path.join("output", "features", "database", "database.sqlite")
-
-if path.isfile(database_file):
-    os.remove(database_file)
-
-agg = Aggregator.from_database(path.join(database_file))
-agg.add_directory(path.join("output", "features", "database"))
+agg = Aggregator.from_database("database.sqlite")
 
 """
 Before using the aggregator to inspect results, let me quickly cover Python generators. A generator is an object that 

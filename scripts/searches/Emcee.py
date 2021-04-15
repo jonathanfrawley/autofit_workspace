@@ -9,6 +9,12 @@ Information about Emcee can be found at the following links:
   - https://github.com/dfm/emcee
  - https://emcee.readthedocs.io/en/stable/
 """
+# %matplotlib inline
+# from pyprojroot import here
+# workspace_path = str(here())
+# %cd $workspace_path
+# print(f"Working Directory has been set to `{workspace_path}`")
+
 import autofit as af
 import model as m
 import analysis as a

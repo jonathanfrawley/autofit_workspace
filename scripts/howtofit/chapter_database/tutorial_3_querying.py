@@ -26,10 +26,7 @@ and not loaded, albeit for this tutorial all 3 of our model-fits had completed a
 """
 from autofit.database.aggregator import Aggregator
 
-agg = Aggregator.from_database(
-    path.join("output", "howtofit", "database", "database.sqlite"),
-    #   completed_only=True
-)
+agg = Aggregator.from_database("database_howtofit.sqlite", completed_only=True)
 
 """
 First, lets print the number of `Samples` objects the `Aggregator` finds. As in the previous tutorial, we should find 

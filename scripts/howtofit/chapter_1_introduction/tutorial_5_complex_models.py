@@ -310,7 +310,10 @@ dimensionality has increased from N=3 to N=6, given that we are now fitting two 
 """
 analysis = Analysis(data=data, noise_map=noise_map)
 
-emcee = af.Emcee(name="tutorial_5__gaussian_x1__exponential_x1", path_prefix="howtofit")
+emcee = af.Emcee(
+    name="tutorial_5__gaussian_x1__exponential_x1",
+    path_prefix=path.join("howtofit", "chapter_1"),
+)
 
 print(
     "Emcee has begun running. \n"
@@ -343,7 +346,10 @@ model = af.Collection(
     gaussian_0=p.Gaussian, gaussian_1=p.Gaussian, exponential=p.Exponential
 )
 
-emcee = af.Emcee(name="tutorial_5__gaussian_x2__exponential_x1", path_prefix="howtofit")
+emcee = af.Emcee(
+    name="tutorial_5__gaussian_x2__exponential_x1",
+    path_prefix=path.join("howtofit", "chapter_1"),
+)
 
 print(
     "Emcee has begun running.\n"
@@ -397,7 +403,9 @@ noise_map = af.util.numpy_array_from_json(
 
 analysis = Analysis(data=data, noise_map=noise_map)
 
-emcee = af.Emcee(name="tutorial_5__gaussian_x3", path_prefix="howtofit")
+emcee = af.Emcee(
+    name="tutorial_5__gaussian_x3", path_prefix=path.join("howtofit", "chapter_1")
+)
 
 print(
     "Emcee has begun running. "
