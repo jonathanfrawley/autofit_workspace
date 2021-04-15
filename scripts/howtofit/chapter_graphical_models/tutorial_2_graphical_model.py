@@ -73,7 +73,7 @@ analysis_1 = Analysis(data=data_1, noise_map=noise_map_1)
 analysis_2 = Analysis(data=data_2, noise_map=noise_map_2)
 
 """
-We now compose the graphical model we will fit. This uses the `PriorModel` and `CollectionPriorModel` objects you 
+We now compose the graphical model we will fit. This uses the `Model` and `Collection` objects you 
 are now familiar with.
 """
 from autofit import graphical as g
@@ -82,39 +82,39 @@ import profiles as p
 """
 We begin by setting up a shared prior for `centre`. 
 
-We set up this up as a single `GaussianPrior` which will be passed to separate `PriorModel`'s for each `Gaussian` used 
+We set up this up as a single `GaussianPrior` which will be passed to separate `Model`'s for each `Gaussian` used 
 to fit each dataset. 
 """
 centre_shared_prior = af.GaussianPrior(mean=10.0, sigma=10.0)
 
 """
-We now set up three `CollectionPriorModel`'s, each of which contain a `Gaussian` that is used to fit each of the 
+We now set up three `Collection`'s, each of which contain a `Gaussian` that is used to fit each of the 
 datasets we loaded above.
 
-All three of these `CollectionPriorModel`'s use the `centre_shared_prior`. This means all three model-components use 
+All three of these `Collection`'s use the `centre_shared_prior`. This means all three model-components use 
 the same value of `centre` for every model composed and fitted by the `NonLinearSearch`, reducing the dimensionality 
 of parameter space from N=9 (e.g. 3 parameters per Gaussian) to N=7.
 """
-gaussian_0 = af.PriorModel(p.Gaussian)
+gaussian_0 = af.Model(p.Gaussian)
 gaussian_0.centre = af.GaussianPrior(mean=50, sigma=20)
 gaussian_0.intensity = af.GaussianPrior(mean=10.0, sigma=10.0)
 gaussian_0.sigma = centre_shared_prior  # This prior is used by all 3 Gaussians!
 
-prior_model_0 = af.CollectionPriorModel(gaussian=gaussian_0)
+prior_model_0 = af.Collection(gaussian=gaussian_0)
 
-gaussian_1 = af.PriorModel(p.Gaussian)
+gaussian_1 = af.Model(p.Gaussian)
 gaussian_1.centre = af.GaussianPrior(mean=50, sigma=20)
 gaussian_1.intensity = af.GaussianPrior(mean=10.0, sigma=10.0)
 gaussian_1.sigma = centre_shared_prior  # This prior is used by all 3 Gaussians!
 
-prior_model_1 = af.CollectionPriorModel(gaussian=gaussian_1)
+prior_model_1 = af.Collection(gaussian=gaussian_1)
 
-gaussian_2 = af.PriorModel(p.Gaussian)
+gaussian_2 = af.Model(p.Gaussian)
 gaussian_2.centre = af.GaussianPrior(mean=50, sigma=20)
 gaussian_2.intensity = af.GaussianPrior(mean=10.0, sigma=10.0)
 gaussian_2.sigma = centre_shared_prior  # This prior is used by all 3 Gaussians!
 
-prior_model_2 = af.CollectionPriorModel(gaussian=gaussian_2)
+prior_model_2 = af.Collection(gaussian=gaussian_2)
 
 """
 Above, we composed a model consisting of three `Gaussian`'s with a shared `centre` prior. We also loaded three datasets
@@ -127,7 +127,7 @@ We now simply need to pair each model-component to each `Analysis` class, so tha
 - `prior_model_1` fits `data_1` via `analysis_1`.
 - `prior_model_2` fits `data_2` via `analysis_2`.
 
-The point where a `PriorModel` and `Analysis` class meet is called a `ModelFactor`. 
+The point where a `Model` and `Analysis` class meet is called a `ModelFactor`. 
 
 This term is used to denote that we are composing a graphical model, which is commonly termed a 'factor graph'. A 
 factor defines a node on this graph where we have some data, a model, and we fit the two together. The 'links' between 

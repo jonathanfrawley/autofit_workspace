@@ -63,8 +63,8 @@ For example, we can load all results which fitted a `Gaussian` model-component, 
 The ability to query via the model is extremely powerful. It enalbes a user to perform many model-fits with many 
 different model parameterizations to large datasets and efficiently load and inspect the results. 
 
-[Note: the code `agg.gaussian` corresponds to the fact that in the `CollectionPriorModel` above, we named the model
-component `gaussian`. If this `CollectionPriorModel` had used a different name the code below would change 
+[Note: the code `agg.gaussian` corresponds to the fact that in the `Collection` above, we named the model
+component `gaussian`. If this `Collection` had used a different name the code below would change 
 correspondingly. Models with multiple model components (e.g., `gaussian` and `exponential`) are therefore also easily 
 accessed via the database.]
 """

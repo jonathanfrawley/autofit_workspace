@@ -51,7 +51,7 @@ We'll fit a single Gaussian as our model.
 """
 import profiles as p
 
-model = af.CollectionPriorModel(gaussian=p.Gaussian)
+model = af.Collection(gaussian=p.Gaussian)
 
 """
 To perform visualization we'll plot the 1D data as a line. 

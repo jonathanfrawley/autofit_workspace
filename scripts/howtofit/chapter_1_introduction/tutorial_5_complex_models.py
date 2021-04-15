@@ -29,14 +29,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 """
-Lets quickly recap tutorial 1, where using `PriorModels` we created a `Gaussian` as a model component and used it to 
+Lets quickly recap tutorial 1, where using `Models` we created a `Gaussian` as a model component and used it to 
 map a list of parameters to a model `instance`.
 """
 import profiles as p
 
-model = af.PriorModel(p.Gaussian)
+model = af.Model(p.Gaussian)
 
-print("PriorModel `Gaussian` object: \n")
+print("Model `Gaussian` object: \n")
 print(model)
 
 instance = model.instance_from_vector(vector=[0.1, 0.2, 0.3])
@@ -50,13 +50,13 @@ print("intensity = ", instance.intensity)
 print("sigma = ", instance.sigma)
 
 """
-Defining a model using multiple model components is straight forward in **PyAutoFit**, using a `CollectionPriorModel`
+Defining a model using multiple model components is straight forward in **PyAutoFit**, using a `Collection`
 object.
 """
-model = af.CollectionPriorModel(gaussian=p.Gaussian, exponential=p.Exponential)
+model = af.Collection(gaussian=p.Gaussian, exponential=p.Exponential)
 
 """
-A `CollectionPriorModel` behaves like a `PriorModel` but contains a collection of model components. For example, it
+A `Collection` behaves like a `Model` but contains a collection of model components. For example, it
 creates a model instance by mapping a list of parameters, which in this case is 6 (3 for the `Gaussian` (centre,
 intensity, sigma) and 3 for the `Exponential` (centre, intensity, rate)).
 """
@@ -64,7 +64,7 @@ instance = model.instance_from_vector(vector=[0.1, 0.2, 0.3, 0.4, 0.5, 0.01])
 
 """
 This `instance` contains each of the model components we defined above, using the input argument name of the
-`CollectionPriorModel` to define the attributes in the `instance`:
+`Collection` to define the attributes in the `instance`:
 """
 print("Instance Parameters \n")
 print("x (Gaussian) = ", instance.gaussian.centre)
@@ -75,9 +75,9 @@ print("intensity (Exponential) = ", instance.exponential.intensity)
 print("sigma (Exponential) = ", instance.exponential.rate)
 
 """
-We can call the components of a `CollectionPriorModel` whatever we want, and the mapped `instance` will use those names.
+We can call the components of a `Collection` whatever we want, and the mapped `instance` will use those names.
 """
-model_custom_names = af.CollectionPriorModel(jammy=p.Gaussian, rich=p.Exponential)
+model_custom_names = af.Collection(jammy=p.Gaussian, rich=p.Exponential)
 
 instance = model_custom_names.instance_from_vector(
     vector=[0.1, 0.2, 0.3, 0.4, 0.5, 0.01]
@@ -171,26 +171,26 @@ class Analysis(af.Analysis):
             The log likelihood value indicating how well this model fit the `MaskedDataset`.
 
         In tutorials 3 & 4, the instance was an instance of a single `Gaussian` profile. PyAutoFit knew this instance
-        would contain just one Gaussian, because when the model was created we used a PriorModel object in PyAutoFit
+        would contain just one Gaussian, because when the model was created we used a Model object in PyAutoFit
         to make the Gaussian. This meant we could create the model data using the line:
 
             model_data = instance.gaussian.profile_from_xvalues(xvalues=self.masked_dataset.xvalues)
 
-        In this tutorial our instance is comprised of multiple Profile objects, because we used a CollectionPriorModel:
+        In this tutorial our instance is comprised of multiple Profile objects, because we used a Collection:
 
-            model = CollectionPriorModel(gaussian=profiles.Gaussian, exponential=profiles.Exponential).
+            model = Collection(gaussian=profiles.Gaussian, exponential=profiles.Exponential).
 
-        By using a CollectionPriorModel, this means the instance parameter input into the fit function is a
+        By using a Collection, this means the instance parameter input into the fit function is a
         dictionary where individual profiles (and their parameters) can be accessed as followed:
 
             print(instance.gaussian)
             print(instance.exponential)
             print(instance.exponential.centre)
 
-        The names of the attributes of the instance correspond to what we input into the CollectionPriorModel. Lets
+        The names of the attributes of the instance correspond to what we input into the Collection. Lets
         look at a second example:
 
-            model = CollectionPriorModel(
+            model = Collection(
                           gaussian_0=profiles.Gaussian,
                           gaussian_1=profiles.Gaussian,
                           whatever_i_want=profiles.Exponential
@@ -200,7 +200,7 @@ class Analysis(af.Analysis):
             print(instance.gaussian_1)
             print(instance.whatever_i_want.centre)
 
-        A CollectionPriorModel allows us to name our model components whatever we want!
+        A Collection allows us to name our model components whatever we want!
 
         In this tutorial, we want our `fit` function to fit the data with a profile which is the summed profile
         of all individual profiles in the model. Look at `model_data_from_instance` to see how we do this.
@@ -328,7 +328,7 @@ Inspect the results of the fit by going to the folder
 `autofit_workspace/output/howtofit/tutorial_5__gaussian_x1__exponential_x1`. The fit takes longer to run than 
 the fits performed in previous tutorials, because the dimensionality of the model we fit increases from 3 to 6.
 
-With the `CollectionPriorModel`, **PyAutoFit** provides all the tools needed to compose and fit any model imaginable!
+With the `Collection`, **PyAutoFit** provides all the tools needed to compose and fit any model imaginable!
 Lets fit a model composed of two `Gaussian`. and and an `Exponential`, which will have a dimensionality of N=9.
 """
 dataset_path = path.join("dataset", "example_1d", "gaussian_x2__exponential_x1")
@@ -339,7 +339,7 @@ noise_map = af.util.numpy_array_from_json(
 
 analysis = Analysis(data=data, noise_map=noise_map)
 
-model = af.CollectionPriorModel(
+model = af.Collection(
     gaussian_0=p.Gaussian, gaussian_1=p.Gaussian, exponential=p.Exponential
 )
 
@@ -364,9 +364,9 @@ profiles, but we also know the following information about the dataset:
 - The `sigma` of one `Gaussian` is equal to 1.0.
 - The sigma of another `Gaussian` is above 3.0.
 
-We can edit our `CollectionPriorModel` to meet these constraints accordingly:
+We can edit our `Collection` to meet these constraints accordingly:
 """
-model = af.CollectionPriorModel(
+model = af.Collection(
     gaussian_0=p.Gaussian, gaussian_1=p.Gaussian, gaussian_2=p.Gaussian
 )
 

@@ -46,7 +46,7 @@ Next, we create our model, which in this case corresponds to a single Gaussian. 
 this `Gaussian` has 3 parameters (centre, intensity and sigma). These are the free parameters of our model that the
 non-linear search fits for, meaning the non-linear parameter space has dimensionality = 3.
 """
-model = af.PriorModel(m.Gaussian)
+model = af.Model(m.Gaussian)
 
 """
 Checkout `autofit_workspace/config/priors/model.json`, this config file defines the default priors of the `Gaussian` 
@@ -86,7 +86,7 @@ https://github.com/joshspeagle/dynesty
 https://dynesty.readthedocs.io/en/latest/index.html
 """
 dynesty = af.DynestyStatic(
-    path_prefix=path.join("overview", "simple", "fit"),
+    path_prefix=path.join("overview", "simple"),
     nlive=100,
     bound="multi",
     sample="auto",
@@ -154,7 +154,7 @@ during the run and terminating sampling early if these meet a specified threshol
 (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr) for a description of how this is implemented.
 """
 emcee = af.Emcee(
-    path_prefix=path.join("overview", "simple", "fit"),
+    path_prefix=path.join("overview", "simple"),
     nwalkers=30,
     nsteps=1000,
     initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
@@ -209,7 +209,7 @@ as providing different options for the initial distribution of particles.
 
 """
 pso = af.PySwarmsGlobal(
-    path_prefix=path.join("overview", "simple", "fit"),
+    path_prefix=path.join("overview", "simple"),
     n_particles=50,
     iters=100,
     cognitive=0.5,

@@ -45,7 +45,7 @@ __Model + Analysis__
 
 We create the model and analysis, which in this example is a single `Gaussian` and therefore has dimensionality N=3.
 """
-model = af.PriorModel(m.Gaussian)
+model = af.Model(m.Gaussian)
 
 model.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
 model.intensity = af.LogUniformPrior(lower_limit=1e-2, upper_limit=1e2)

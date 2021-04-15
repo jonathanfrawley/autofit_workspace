@@ -48,10 +48,10 @@ noted the `Gaussian` has 3 parameters (centre, intensity and sigma) and Exponent
 rate). These are the free parameters of our model that the `NonLinearSearch` fits for, meaning the non-linear
 parameter space has dimensionality = 6.
 
-In the simple example tutorial, we used a `PriorModel` to create the model of the Gaussian. PriorModels cannot be used to
-compose models from multiple model components and for this example we must instead use the CollectionPriorModel.
+In the simple example tutorial, we used a `Model` to create the model of the Gaussian. Models cannot be used to
+compose models from multiple model components and for this example we must instead use the Collection.
 """
-model = af.CollectionPriorModel(gaussian=m.Gaussian, exponential=m.Exponential)
+model = af.Collection(gaussian=m.Gaussian, exponential=m.Exponential)
 
 """
 Checkout `autofit_workspace/config/priors/model.json`, this config file defines the default priors of the `Gaussian` 
@@ -70,7 +70,7 @@ model.exponential.rate = af.UniformPrior(lower_limit=0.0, upper_limit=10.0)
 Above, we named our model-components: we called the `Gaussian` component `gaussian` and Exponential component
 `exponential`. We could have chosen anything for these names, as shown by the code below.
 """
-model_custom_names = af.CollectionPriorModel(
+model_custom_names = af.Collection(
     custom_name=m.Gaussian, another_custom_name=m.Exponential
 )
 
@@ -122,7 +122,7 @@ https://github.com/joshspeagle/dynesty
 https://dynesty.readthedocs.io/en/latest/index.html
 """
 dynesty = af.DynestyStatic(
-    path_prefix=path.join("overview", "complex", "fit"),
+    path_prefix=path.join("overview", "complex"),
     nlive=60,
     bound="multi",
     sample="auto",
@@ -198,7 +198,7 @@ during the run and terminating sampling early if these meet a specified threshol
 (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr) for a description of how this is implemented.
 """
 emcee = af.Emcee(
-    path_prefix=path.join("overview", "complex", "fit"),
+    path_prefix=path.join("overview", "complex"),
     nwalkers=50,
     nsteps=2000,
     initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
@@ -261,7 +261,7 @@ as providing different options for the initial distribution of particles.
 
 """
 pso = af.PySwarmsLocal(
-    path_prefix=path.join("overview", "complex", "fit"),
+    path_prefix=path.join("overview", "complex"),
     n_particles=100,
     iters=1000,
     cognitive=0.5,

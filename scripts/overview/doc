@@ -9,11 +9,11 @@ First, lets cover the two sub-folders, 'simple' and 'complex':
 
     simple:
         For all examples the model is composed of just one model component, a 1D Gaussian. Therefore, only the
-        PyAutoFit `PriorModel` class is used for model composition.
+        PyAutoFit `Model` class is used for model composition.
 
     complex:
         The model is composed of multiple model components (a 1D `Gaussian` and / or a 1D Exponential). Therefore, the
-        PyAutoFit CollectionPriorModel class is used for model composition.
+        PyAutoFit Collection class is used for model composition.
 
 We recommend that you begin by reading through the 'simple' sub-folder. If your model-fitting problem is simple and
 doesn't require a model composed from multiple components, you should go ahead and adapt the scripts as templates!

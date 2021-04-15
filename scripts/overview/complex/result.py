@@ -42,10 +42,10 @@ noted the `Gaussian` has 3 parameters (centre, intensity and sigma) and Exponent
 rate). These are the free parameters of our model that the `NonLinearSearch` fits for, meaning the non-linear
 parameter space has dimensionality = 6.
 
-In the simple example tutorial, we used a `PriorModel` to create the model of the Gaussian. PriorModels cannot be used to
-compose models from multiple model components and for this example we must instead use the CollectionPriorModel.
+In the simple example tutorial, we used a `Model` to create the model of the Gaussian. Models cannot be used to
+compose models from multiple model components and for this example we must instead use the Collection.
 """
-model = af.CollectionPriorModel(gaussian=m.Gaussian, exponential=m.Exponential)
+model = af.Collection(gaussian=m.Gaussian, exponential=m.Exponential)
 
 """
 Checkout `autofit_workspace/config/priors` - this config file defines the default priors of all our model
@@ -121,8 +121,8 @@ print("\n")
 
 """
 When we return a result as an instance, it provides us with instances of the model using the Python classes used to
-compose it. Because our fit uses a CollectionPriorModel (as opposed to a `PriorModel` in the simple example) the instance
-returned a dictionary named acoording to the names given to the CollectionPriorModel, which above were `gaussian` and
+compose it. Because our fit uses a Collection (as opposed to a `Model` in the simple example) the instance
+returned a dictionary named acoording to the names given to the Collection, which above were `gaussian` and
 `exponential`.
 """
 max_log_likelihood_instance = samples.max_log_likelihood_instance
@@ -159,7 +159,7 @@ plt.show()
 plt.close()
 
 """
-All methods which give instances give us the same instance of a CollectionPriorModel:
+All methods which give instances give us the same instance of a Collection:
 """
 print(samples.median_pdf_instance)
 print(samples.instance_at_upper_sigma)
@@ -170,7 +170,7 @@ print(samples.instance_from_sample_index(sample_index=500))
 
 """
 So that is that - adding model complexity doesn`t change a whole lot about the Result object, other than the switch
-to CollectionPriorModels meaning that our instances now have named entries.
+to Collections meaning that our instances now have named entries.
 
 The take home point should be that when you name your model components, you should make sure to give them descriptive
 and information names that make the use of a result object clear and intuitive!

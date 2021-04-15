@@ -137,10 +137,10 @@ For example, because our `Gaussian` is in the module `gaussian.py`, its priors a
 file `gaussian.json`. Check this file out now to see the default priors; we'll discuss what the different inputs
 mean later on.
 
-To set it up as a model component, we use a `PriorModel` object.
+To set it up as a model component, we use a `Model` object.
 """
-model = af.PriorModel(g.Gaussian)
-print("PriorModel `Gaussian` object: \n")
+model = af.Model(g.Gaussian)
+print("Model `Gaussian` object: \n")
 print(model)
 
 """
@@ -152,7 +152,7 @@ model.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=np.inf)
 model.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=np.inf)
 
 """
-Using this `PriorModel` we can create an `instance` of the model, by mapping a list of physical values of each 
+Using this `Model` we can create an `instance` of the model, by mapping a list of physical values of each 
 parameter as follows.
 """
 instance = model.instance_from_vector(vector=[1.0, 2.0, 3.0])
@@ -174,9 +174,9 @@ print("sigma = ", instance.sigma)
 """
 Congratulations! You`ve defined your first model in **PyAutoFit**! :)
 
-So, why is it called a `PriorModel`?
+So, why is it called a `Model`?
 
-The parameters of a `PriorModel` in **PyAutoFit** all have a prior associated with them. Priors encode our expectations 
+The parameters of a `Model` in **PyAutoFit** all have a prior associated with them. Priors encode our expectations 
 on what values we expect each parameter can have. For example, we might know that our `Gaussian` will be centred near 
 0.0.
 
