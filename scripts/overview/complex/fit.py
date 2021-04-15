@@ -122,7 +122,7 @@ https://github.com/joshspeagle/dynesty
 https://dynesty.readthedocs.io/en/latest/index.html
 """
 dynesty = af.DynestyStatic(
-    path_prefix=path.join("overview", "complex", "fit"),
+    path_prefix=path.join("overview", "complex"),
     nlive=60,
     bound="multi",
     sample="auto",
@@ -198,7 +198,7 @@ during the run and terminating sampling early if these meet a specified threshol
 (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr) for a description of how this is implemented.
 """
 emcee = af.Emcee(
-    path_prefix=path.join("overview", "complex", "fit"),
+    path_prefix=path.join("overview", "complex"),
     nwalkers=50,
     nsteps=2000,
     initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
@@ -261,7 +261,7 @@ as providing different options for the initial distribution of particles.
 
 """
 pso = af.PySwarmsLocal(
-    path_prefix=path.join("overview", "complex", "fit"),
+    path_prefix=path.join("overview", "complex"),
     n_particles=100,
     iters=1000,
     cognitive=0.5,
