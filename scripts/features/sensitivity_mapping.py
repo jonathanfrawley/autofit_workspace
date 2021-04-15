@@ -82,7 +82,7 @@ two `Gaussians`.
 To avoid slow model-fitting and more clearly prounce the results of model comparison, we restrict the centre of 
 the`gaussian_feature` to its true centre of 70 and sigma value of 0.5.
 """
-model = af.CollectionPriorModel(gaussian_main=m.Gaussian)
+model = af.Collection(gaussian_main=m.Gaussian)
 
 dynesty = af.DynestyStatic(
     path_prefix=path.join("features", "sensitivity_mapping", "single_gaussian"),
@@ -92,7 +92,7 @@ dynesty = af.DynestyStatic(
 
 result_single = dynesty.fit(model=model, analysis=analysis)
 
-model = af.CollectionPriorModel(gaussian_main=m.Gaussian, gaussian_feature=m.Gaussian)
+model = af.Collection(gaussian_main=m.Gaussian, gaussian_feature=m.Gaussian)
 model.gaussian_feature.centre = 70.0
 model.gaussian_feature.sigma = 0.5
 
@@ -127,7 +127,7 @@ evidence of the every simpler model to compare to the more complex model.
 
 The `base_model` corresponds to the `gaussian_main` above.
 """
-base_model = af.CollectionPriorModel(gaussian_main=m.Gaussian)
+base_model = af.Collection(gaussian_main=m.Gaussian)
 
 """
 We now define the `perturbation_model`, which is the model component whose parameters we iterate over to perform 
@@ -141,7 +141,7 @@ By fitting both of these models to every simulated dataset, we will therefore in
 model to every dataset. Sensitivity mapping therefore maps out for what values of `intensity` in the `gaussian_feature`
  does the more complex model-fit provide higher values of Bayesian evidence than the simpler model-fit.
 """
-perturbation_model = af.PriorModel(m.Gaussian)
+perturbation_model = af.Model(m.Gaussian)
 
 """
 Sensitivity mapping is typically performed over a large range of parameters. However, to make this demonstration quick

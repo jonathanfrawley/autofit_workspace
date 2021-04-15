@@ -80,7 +80,7 @@ __Model__
 Next, we create the model, which in this case corresponds to two `Gaussian`'s, one for the main signal seen in the
 data and one for the feature on pixel 70.
 """
-model = af.CollectionPriorModel(gaussian_main=m.Gaussian, gaussian_feature=m.Gaussian)
+model = af.Collection(gaussian_main=m.Gaussian, gaussian_feature=m.Gaussian)
 
 """
 __Analysis__

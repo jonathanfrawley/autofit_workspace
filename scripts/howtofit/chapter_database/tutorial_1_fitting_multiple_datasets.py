@@ -156,11 +156,9 @@ class Analysis(af.Analysis):
         # These functions save the objects we will later access using the aggregator. They are saved via the `pickle`
         # module in Python, which serializes the data on to the hard-disk.
 
-        with open(path.join(f"{paths.pickle_path}", "data.pickle"), "wb") as f:
-            pickle.dump(self.data, f)
+        paths.save_object("data", self.data)
 
-        with open(path.join(f"{paths.pickle_path}", "noise_map.pickle"), "wb") as f:
-            pickle.dump(self.noise_map, f)
+        paths.save_object("data", self.noise_map)
 
 
 """
@@ -168,7 +166,7 @@ We'll fit the single `Gaussian` model used in chapter 1 of **HowToFit**.
 """
 import profiles as p
 
-model = af.CollectionPriorModel(gaussian=p.Gaussian)
+model = af.Collection(gaussian=p.Gaussian)
 
 model.gaussian.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
 model.gaussian.intensity = af.LogUniformPrior(lower_limit=1e-2, upper_limit=1e2)

@@ -149,7 +149,7 @@ Now lets run the `NonLinearSearch` to get ourselves a `Result`.
 """
 import profiles as p
 
-model = af.CollectionPriorModel(gaussian=p.Gaussian)
+model = af.Collection(gaussian=p.Gaussian)
 
 analysis = Analysis(data=data, noise_map=noise_map)
 
@@ -246,7 +246,7 @@ max_log_likelihood_instance = samples.max_log_likelihood_instance
 
 """
 A `model instance` contains all the model components of our fit, which for the fit above was a single `Gaussian`
-profile (the word `gaussian` comes from what we called it in the `CollectionPriorModel` above).
+profile (the word `gaussian` comes from what we called it in the `Collection` above).
 """
 print(max_log_likelihood_instance.gaussian)
 

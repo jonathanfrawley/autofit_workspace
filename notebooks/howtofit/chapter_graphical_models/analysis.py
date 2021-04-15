@@ -124,8 +124,6 @@ class Analysis(af.Analysis):
         # These functions save the objects we will later access using the aggregator. They are saved via the `pickle`
         # module in Python, which serializes the data on to the hard-disk.
 
-        with open(path.join(f"{paths.pickle_path}", "data.pickle"), "wb") as f:
-            pickle.dump(self.data, f)
+        paths.save_object("data", self.data)
 
-        with open(path.join(f"{paths.pickle_path}", "noise_map.pickle"), "wb") as f:
-            pickle.dump(self.noise_map, f)
+        paths.save_object("data", self.noise_map)

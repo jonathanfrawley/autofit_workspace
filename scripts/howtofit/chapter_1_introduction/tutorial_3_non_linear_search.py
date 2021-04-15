@@ -141,13 +141,13 @@ class Analysis(af.Analysis):
 
 
 """
-To perform the `NonLinearSearch` using `Emcee`, we simply compose our model using a `PriorModel`, instantiate the 
+To perform the `NonLinearSearch` using `Emcee`, we simply compose our model using a `Model`, instantiate the 
 `Analysis` class and pass them to an instance of the `Emcee` class. 
 
 We also pass a `name` and `path_prefrix`, which specifies that when the results are output to the folder 
 `autofit_workspace/output` they'll also be written to the folder `howtofit/chapter_1/tutorial_3`.
 """
-model = af.PriorModel(g.Gaussian)
+model = af.Model(g.Gaussian)
 model.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
 model.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=1e2)
 model.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=50.0)

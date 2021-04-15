@@ -96,7 +96,7 @@ __Model__
 
 We are now going to fit the left `Gaussian` in this split dataset. 
 """
-model = af.CollectionPriorModel(gaussian_left=m.Gaussian)
+model = af.Collection(gaussian_left=m.Gaussian)
 
 """
 __Search[1]__
@@ -151,7 +151,7 @@ search[1].
 For search chaining, **PyAutoFit** has many convenient methods for passing the results of a search to a subsequence 
 search. Below, we achieve this by passing the result of the search above as an `instance.
 """
-model = af.CollectionPriorModel(
+model = af.Collection(
     gaussian_left=search_1_result.instance.gaussian_left, gaussian_right=m.Gaussian
 )
 
@@ -206,7 +206,7 @@ To pass the result in this way we use the command `result.model`, which in contr
 the parameters not as the maximum log likelihood values but as `GaussianPrior`'s that are fitted for by the
 non-linear search. We discuss below how this `GaussianPrior` is passed.
 """
-model = af.CollectionPriorModel(
+model = af.Collection(
     gaussian_left=search_1_result.model.gaussian_left,
     gaussian_right=search_2_result.model.gaussian_right,
 )

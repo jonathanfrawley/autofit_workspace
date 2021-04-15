@@ -46,7 +46,7 @@ Next, we create our model, which in this case corresponds to a single Gaussian. 
 this `Gaussian` has 3 parameters (centre, intensity and sigma). These are the free parameters of our model that the
 non-linear search fits for, meaning the non-linear parameter space has dimensionality = 3.
 """
-model = af.PriorModel(m.Gaussian)
+model = af.Model(m.Gaussian)
 
 """
 Checkout `autofit_workspace/config/priors/model.json`, this config file defines the default priors of the `Gaussian` 

@@ -37,7 +37,7 @@ class Analysis(af.Analysis):
 
         Parameters
         ----------
-        instance : af.CollectionPriorModel
+        instance : af.Collection
             The model instances of the profiles.
 
         Returnsn
@@ -45,8 +45,8 @@ class Analysis(af.Analysis):
         fit : Fit.log_likelihood
             The log likelihood value indicating how well this model fit the dataset.
 
-        The `instance` that comes into this method is a CollectionPriorModel. It contains instances of every class
-        we instantiated it with, where each instance is named following the names given to the CollectionPriorModel,
+        The `instance` that comes into this method is a Collection. It contains instances of every class
+        we instantiated it with, where each instance is named following the names given to the Collection,
         which in this example is a `Gaussian` (with name `gaussian) and Exponential (with name `exponential`):
         """
         # print("Gaussian Instance:")

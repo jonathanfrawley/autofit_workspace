@@ -171,7 +171,7 @@ Lets now repeat the fit of the previous tutorial, but with visualization.
 """
 import gaussian as g
 
-model = af.PriorModel(g.Gaussian)
+model = af.Model(g.Gaussian)
 
 emcee = af.Emcee(name="tutorial_4_visualization", path_prefix="howtofit")
 

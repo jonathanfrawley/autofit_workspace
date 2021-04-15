@@ -60,7 +60,7 @@ __Model__
 
 Next, we create our model, which again corresponds to a single `Gaussian` with manual priors.
 """
-model = af.CollectionPriorModel(gaussian=m.Gaussian)
+model = af.Collection(gaussian=m.Gaussian)
 
 model.gaussian.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
 model.gaussian.intensity = af.LogUniformPrior(lower_limit=1e-2, upper_limit=1e2)
@@ -210,8 +210,8 @@ For example, we can load all results which fitted a `Gaussian` model-component, 
 The ability to query via the model is extremely powerful. It enables a user to perform many model-fits with many 
 different model parameterizations to large datasets and efficiently load and inspect the results. 
 
-[Note: the code `agg.gaussian` corresponds to the fact that in the `CollectionPriorModel` above, we named the model
-component `gaussian`. If this `CollectionPriorModel` had used a different name the code below would change 
+[Note: the code `agg.gaussian` corresponds to the fact that in the `Collection` above, we named the model
+component `gaussian`. If this `Collection` had used a different name the code below would change 
 correspondingly. Models with multiple model components (e.g., `gaussian` and `exponential`) are therefore also easily 
 accessed via the database.]
 """

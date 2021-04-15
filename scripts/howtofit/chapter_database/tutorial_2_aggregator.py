@@ -107,7 +107,7 @@ print(instances, "\n")
 
 """
 The model instance contains all the model components of our fit which for the fits above was a single `Gaussian`
-profile (the word `gaussian` comes from what we called it in the `CollectionPriorModel` above).
+profile (the word `gaussian` comes from what we called it in the `Collection` above).
 """
 print(instances[0].gaussian)
 print(instances[1].gaussian)

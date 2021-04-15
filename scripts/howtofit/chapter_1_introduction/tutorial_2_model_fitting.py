@@ -58,7 +58,7 @@ use, which are a 1D ndarray spanning values 0 to 100.
 
 If we pass these values to an instance of the `Gaussian` class, we can create a line of the gaussian`s values.
 """
-model = af.PriorModel(g.Gaussian)
+model = af.Model(g.Gaussian)
 model.centre = af.UniformPrior(lower_limit=0.0, upper_limit=np.inf)
 model.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=np.inf)
 model.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=np.inf)

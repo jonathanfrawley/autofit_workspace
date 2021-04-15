@@ -74,7 +74,9 @@ class Analysis(af.Analysis):
         residual_map = self.data - model_data
         chi_squared_map = (residual_map / self.noise_map) ** 2.0
 
-        """The visualizer now outputs images of the best-fit results to hard-disk (checkout `visualizer.py`)."""
+        """
+        The visualizer now outputs images of the best-fit results to hard-disk (checkout `visualizer.py`).
+        """
 
         plot_line(
             xvalues=xvalues,
@@ -124,8 +126,5 @@ class Analysis(af.Analysis):
         # These functions save the objects we will later access using the aggregator. They are saved via the `pickle`
         # module in Python, which serializes the data on to the hard-disk.
 
-        with open(path.join(f"{paths.pickle_path}", "data.pickle"), "wb") as f:
-            pickle.dump(self.data, f)
-
-        with open(path.join(f"{paths.pickle_path}", "noise_map.pickle"), "wb") as f:
-            pickle.dump(self.noise_map, f)
+        paths.save_object("data", self.data)
+        paths.save_object("data", self.noise_map)
