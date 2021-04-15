@@ -64,7 +64,7 @@ tutorials.
 Workspace Version
 =================
 
-This version of the workspace are built and tested for using **PyAutoFit v0.74.0**.
+This version of the workspace are built and tested for using **PyAutoFit v0.75.0**.
 
 Support
 =======
