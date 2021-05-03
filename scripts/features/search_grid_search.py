@@ -98,8 +98,8 @@ We will now fit the data using a single non-linear search, to demonstrate the be
 the search grid search.
 """
 dynesty = af.DynestyStatic(
-    name="single_fit",
     path_prefix=path.join("features", "search_grid_search"),
+    name="single_fit",
     nlive=100,
     iterations_per_update=500,
     maxcall=30000,

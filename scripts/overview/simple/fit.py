@@ -70,6 +70,23 @@ pass it the data and its noise-map.
 analysis = a.Analysis(data=data, noise_map=noise_map)
 
 """
+__Paths__
+
+We specify a `path_prefix` which is passed to the non-linear search below, so that our results go to the 
+folder `autofit_workspace/output/overview/simple`. The search is also given a `name`, which defines the folder
+results are output too.
+
+Results are output to a folder which is a collection of random characters, which is the 'unique_identifier' of
+the model-fit. This identifier is generated based on the model fitted and search used, such that an identical
+combination of model and search generates the same identifier.
+
+This ensures that rerunning an identical fit will use the existing results to resume the model-fit. In contrast, if
+you change the model or search, a new unique identifier will be generated, ensuring that the model-fit results are
+output into a separate folder.
+"""
+path_prefix = path.join("overview", "simple")
+
+"""
 #############################
 ###### NESTED SAMPLING ######
 #############################
@@ -78,15 +95,14 @@ We finally choose and set up our non-linear search. we'll first fit the data wit
 Dynesty. Below, we manually specify all of the Dynesty settings, however if we omitted them the default values
 found in the config file `config/non_linear/Dynesty.ini` would be used.
 
-We also specify a `path_prefix`, so that our results go to the folder `autofit_workspace/output/overview/simple`.
-
 For a full description of Dynesty checkout its Github and documentation webpages:
 
 https://github.com/joshspeagle/dynesty
 https://dynesty.readthedocs.io/en/latest/index.html
 """
 dynesty = af.DynestyStatic(
-    path_prefix=path.join("overview", "simple"),
+    path_prefix=path_prefix,
+    name="DynestyStatic",
     nlive=100,
     bound="multi",
     sample="auto",
@@ -107,7 +123,7 @@ dynesty = af.DynestyStatic(
 """
 To perform the fit with Dynesty, we pass it our model and analysis and we`re good to go!
 
-Checkout the folder `autofit_workspace/output/dynestystatic`, where the `NonLinearSearch` results, visualization and
+Checkout the folder `autofit_workspace/output/DynestyStatic`, where the `NonLinearSearch` results, visualization and
 information can be found.
 """
 result = dynesty.fit(model=model, analysis=analysis)
@@ -154,7 +170,8 @@ during the run and terminating sampling early if these meet a specified threshol
 (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr) for a description of how this is implemented.
 """
 emcee = af.Emcee(
-    path_prefix=path.join("overview", "simple"),
+    path_prefix=path_prefix,
+    name="Emcee",
     nwalkers=30,
     nsteps=1000,
     initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
@@ -210,6 +227,7 @@ as providing different options for the initial distribution of particles.
 """
 pso = af.PySwarmsGlobal(
     path_prefix=path.join("overview", "simple"),
+    name="PySwarmsGlobal",
     n_particles=50,
     iters=100,
     cognitive=0.5,

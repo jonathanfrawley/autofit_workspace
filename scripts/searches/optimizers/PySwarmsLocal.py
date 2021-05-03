@@ -55,7 +55,7 @@ We create the model and analysis, which in this example is a single `Gaussian` a
 model = af.Model(m.Gaussian)
 
 model.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
-model.intensity = af.LogUniformPrior(lower_limit=1e-2, upper_limit=1e2)
+model.intensity = af.UniformPrior(lower_limit=1e-2, upper_limit=1e2)
 model.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=30.0)
 
 analysis = a.Analysis(data=data, noise_map=noise_map)
@@ -73,15 +73,15 @@ pso = af.PySwarmsLocal(
     path_prefix="searches",
     name="PySwarmsLocal",
     n_particles=50,
-    iters=100,
+    iters=1000,
     cognitive=0.5,
     social=0.3,
     inertia=0.9,
     number_of_k_neighbors=3,
     minkowski_p_norm=2,
     ftol=-np.inf,
-    iterations_per_update=500,
-    number_of_cores=2,
+    iterations_per_update=1000,
+    number_of_cores=1,
 )
 
 result = pso.fit(model=model, analysis=analysis)

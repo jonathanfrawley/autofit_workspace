@@ -39,8 +39,9 @@ For each dataset we load it from hard-disc, set up its `Analysis` class and fit 
 
 The 3 datasets are in the `autofit_workspace/dataset/example_1d` folder.
 
-We want each results to be stored in the database with an entry specific to the dataset. We'll use the `Dataset`'s name 
-string to do this, so lets create a list of the 3 dataset names.
+We want each results to be stored in the database with an entry specific to the dataset, by generating the unique
+identifier using the name of the dataset. We'll use the `dataset_name` string to do this, so lets create a list of 
+the 3 dataset names.
 """
 dataset_names = ["gaussian_x1_0", "gaussian_x1_1", "gaussian_x1_2"]
 
@@ -96,20 +97,23 @@ for dataset_name in dataset_names:
     analysis = a.Analysis(data=data, noise_map=noise_map)
 
     """
-    In all examples so far, results have gone to the default output path, which was the `autofit_workspace/output` 
-    folder and a folder named after the non linear search. In this example, we will repeat this process and then load
-    these results into the database and a `database.sqlite` file.
+    In all examples so far, results were wrriten to the `autofit_workspace/output` folder with a path and folder 
+    named after the non-linear search.
     
-    However, results can be written directly to the `database.sqlite` file omitted hard-disc output entirely, which
-    can be important for performing large model-fitting tasks on high performance computing facilities where there
-    may be limits on the number of files allowed. The commented out code below shows how one would perform
-    direct output to the `.sqlite` file. 
+    In this example, results are written directly to the `database.sqlite` file after the model-fit is complete and 
+    only stored in the output folder during the model-fit. This can be important for performing large model-fitting 
+    tasks on high performance computing facilities where there may be limits on the number of files allowed, or there
+    are too many results to make navigating the output folder manually feasible.
     
-    [NOTE: direct writing to .sqlite not supported yet, so this fit currently outputs to hard-disc as per usual and
-    these outputs will be used to make the database.]
+    The `unique_tag` uses the `dataset_name` name below to generate the unique identifier, which in other examples we 
+    have seen is also generated depending on the search settings and model. In this example, all three model fits
+    use an identical search and model, so this `unique_tag` is key in ensuring 3 separate sets of results for each
+    model-fit are stored in the output folder and written to the .sqlite database. 
     """
     emcee = af.Emcee(
-        path_prefix=path.join("features", "database", dataset_name),
+        path_prefix=path.join("features", "database"),
+        unique_tag=dataset_name,  # This makes the unique identifier use the dataset name
+        session=session,  # This instructs the search to write to the .sqlite database.
         nwalkers=30,
         nsteps=1000,
         initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
@@ -120,17 +124,16 @@ for dataset_name in dataset_names:
             change_threshold=0.01,
         ),
         number_of_cores=1,
-        session=session,
     )
-
-    # INSERT CODE HERE.
 
     print(
         f"Emcee has begun running. This Jupyter notebook cell with progress once Emcee has completed, this could take a "
         f"few minutes!"
     )
 
-    result = emcee.fit(model=model, analysis=analysis, info=info)
+    result = emcee.fit(
+        model=model, analysis=analysis, dataset_name=dataset_name, info=info
+    )
 
 print("Emcee has finished run - you may now continue the notebook.")
 

@@ -53,7 +53,9 @@ print("sigma = ", instance.sigma)
 Defining a model using multiple model components is straight forward in **PyAutoFit**, using a `Collection`
 object.
 """
-model = af.Collection(gaussian=p.Gaussian, exponential=p.Exponential)
+model = af.Collection(
+    gaussian=af.Model(p.Gaussian), exponential=af.Model(p.Exponential)
+)
 
 """
 A `Collection` behaves like a `Model` but contains a collection of model components. For example, it
@@ -77,19 +79,21 @@ print("sigma (Exponential) = ", instance.exponential.rate)
 """
 We can call the components of a `Collection` whatever we want, and the mapped `instance` will use those names.
 """
-model_custom_names = af.Collection(jammy=p.Gaussian, rich=p.Exponential)
+model_custom_names = af.Collection(
+    custom_name=af.Model(p.Gaussian), another_custom_name=af.Model(p.Exponential)
+)
 
 instance = model_custom_names.instance_from_vector(
     vector=[0.1, 0.2, 0.3, 0.4, 0.5, 0.01]
 )
 
 print("Instance Parameters \n")
-print("x (Gaussian) = ", instance.jammy.centre)
-print("intensity (Gaussian) = ", instance.jammy.intensity)
-print("sigma (Gaussian) = ", instance.jammy.sigma)
-print("x (Exponential) = ", instance.rich.centre)
-print("intensity (Exponential) = ", instance.rich.intensity)
-print("sigma (Exponential) = ", instance.rich.rate)
+print("x (Gaussian) = ", instance.custom_name.centre)
+print("intensity (Gaussian) = ", instance.custom_name.intensity)
+print("sigma (Gaussian) = ", instance.custom_name.sigma)
+print("x (Exponential) = ", instance.another_custom_name.centre)
+print("intensity (Exponential) = ", instance.another_custom_name.intensity)
+print("sigma (Exponential) = ", instance.another_custom_name.rate)
 
 """
 To perform visualization we'll again use the plot_line function.
@@ -190,15 +194,15 @@ class Analysis(af.Analysis):
         The names of the attributes of the instance correspond to what we input into the Collection. Lets
         look at a second example:
 
-            model = Collection(
-                          gaussian_0=profiles.Gaussian,
-                          gaussian_1=profiles.Gaussian,
-                          whatever_i_want=profiles.Exponential
-                     ).
+        model = Collection(
+                      gaussian_0=af.Model(profiles.Gaussian),
+                      gaussian_1=af.Model(profiles.Gaussian),
+                      whatever_i_want=af.Model(profiles.Exponential)
+                 ).
 
-            print(instance.gaussian_0)
-            print(instance.gaussian_1)
-            print(instance.whatever_i_want.centre)
+        print(instance.gaussian_0)
+        print(instance.gaussian_1)
+        print(instance.whatever_i_want.centre)
 
         A Collection allows us to name our model components whatever we want!
 
@@ -231,12 +235,12 @@ class Analysis(af.Analysis):
         For those not familiar with dictionary comprehensions, below I've included how one would use the instance to 
         create the summed profile using a more simple for loop.
 
-            model_data = np.zeros(shape=self.masked_dataset.xvalues.shape[0])
+        model_data = np.zeros(shape=self.masked_dataset.xvalues.shape[0])
 
-            for profile in instance:
-                model_data += profile.profile_from_xvalues(xvalues=self.masked_dataset.xvalues)
+        for profile in instance:
+            model_data += profile.profile_from_xvalues(xvalues=self.masked_dataset.xvalues)
 
-            return model_data
+        return model_data
         """
 
     def visualize(self, paths, instance, during_analysis):
@@ -252,7 +256,9 @@ class Analysis(af.Analysis):
         residual_map = self.data - model_data
         chi_squared_map = (residual_map / self.noise_map) ** 2.0
 
-        """The visualizer now outputs images of the best-fit results to hard-disk (checkout `visualizer.py`)."""
+        """
+        The visualizer now outputs images of the best-fit results to hard-disk (checkout `visualizer.py`).
+        """
         plot_line(
             xvalues=xvalues,
             line=self.data,
@@ -311,8 +317,8 @@ dimensionality has increased from N=3 to N=6, given that we are now fitting two 
 analysis = Analysis(data=data, noise_map=noise_map)
 
 emcee = af.Emcee(
-    name="tutorial_5__gaussian_x1__exponential_x1",
     path_prefix=path.join("howtofit", "chapter_1"),
+    name="tutorial_5__gaussian_x1__exponential_x1",
 )
 
 print(
@@ -343,7 +349,9 @@ noise_map = af.util.numpy_array_from_json(
 analysis = Analysis(data=data, noise_map=noise_map)
 
 model = af.Collection(
-    gaussian_0=p.Gaussian, gaussian_1=p.Gaussian, exponential=p.Exponential
+    gaussian_0=af.Model(p.Gaussian),
+    gaussian_1=af.Model(p.Gaussian),
+    exponential=af.Model(p.Exponential),
 )
 
 emcee = af.Emcee(
@@ -370,27 +378,34 @@ profiles, but we also know the following information about the dataset:
 - The `sigma` of one `Gaussian` is equal to 1.0.
 - The sigma of another `Gaussian` is above 3.0.
 
-We can edit our `Collection` to meet these constraints accordingly:
+We can edit the `Model` components we pass into the `Collection` to meet these constraints accordingly.
 """
-model = af.Collection(
-    gaussian_0=p.Gaussian, gaussian_1=p.Gaussian, gaussian_2=p.Gaussian
-)
+gaussian_0 = af.Model(p.Gaussian)
+gaussian_1 = af.Model(p.Gaussian)
+gaussian_2 = af.Model(p.Gaussian)
 
 """
 This aligns the `centre`'s of the 3 `Gaussian`'s reducing the dimensionality of the model from N=9 to N=7.
 """
-model.gaussian_0.centre = model.gaussian_1.centre
-model.gaussian_1.centre = model.gaussian_2.centre
+gaussian_0.centre = gaussian_1.centre
+gaussian_1.centre = gaussian_2.centre
 
 """
 This fixes the `sigma` value of one `Gaussian` to 1.0, further reducing the dimensionality from N=7 to N=6.
 """
-model.gaussian_0.sigma = 1.0
+gaussian_0.sigma = 1.0
 
 """
 This assertion forces all values of the `sigma` value of the third `Gaussian` to  be above 3.0.
 """
-model.gaussian_2.add_assertion(model.gaussian_2.sigma > 3.0)
+gaussian_2.add_assertion(gaussian_2.sigma > 3.0)
+
+"""
+We now input these model components into the `Collection`.
+"""
+model = af.Collection(
+    gaussian_0=gaussian_0, gaussian_1=gaussian_1, gaussian_2=gaussian_2
+)
 
 """
 We can now fit this model as per usual.
@@ -404,7 +419,7 @@ noise_map = af.util.numpy_array_from_json(
 analysis = Analysis(data=data, noise_map=noise_map)
 
 emcee = af.Emcee(
-    name="tutorial_5__gaussian_x3", path_prefix=path.join("howtofit", "chapter_1")
+    path_prefix=path.join("howtofit", "chapter_1"), name="tutorial_5__gaussian_x3"
 )
 
 print(

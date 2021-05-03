@@ -106,7 +106,7 @@ We will now fit the data with the `left_gaussian` using a single non-linear sear
 Given the simplicity of the model, we can use a low number of live points to achieve a fast model-fit.
 """
 dynesty = af.DynestyStatic(
-    name=("search[1]__left_gaussian"),
+    name="search[1]__left_gaussian",
     path_prefix=path.join("features", "search_chaining"),
     nlive=30,
     iterations_per_update=500,
@@ -161,7 +161,7 @@ We now run our second Dynesty search to fit the right `Gaussian`.
 Given the simplicity of the model, we can again use a low number of live points to achieve a fast model-fit.
 """
 dynesty = af.DynestyStatic(
-    name=("search[2]__right_gaussian"),
+    name="search[2]__right_gaussian",
     path_prefix=path.join("features", "search_chaining"),
     nlive=30,
     iterations_per_update=500,
@@ -212,7 +212,7 @@ model = af.Collection(
 )
 
 dynesty = af.DynestyStatic(
-    name=("search[3]__both_gaussians"),
+    name="search[3]__both_gaussians",
     path_prefix=path.join("features", "search_chaining"),
     nlive=100,
     iterations_per_update=500,

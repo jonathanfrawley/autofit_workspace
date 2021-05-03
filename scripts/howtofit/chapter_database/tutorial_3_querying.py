@@ -14,7 +14,7 @@ tutorial, we'll learn how query the database and load only the results that we w
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 from os import path
-import autofit as af
+
 import profiles as p
 
 """

@@ -30,7 +30,6 @@ import os
 from os import path
 import numpy as np
 import matplotlib.pyplot as plt
-import pickle
 
 """
 We'll reuse the `plot_line` and `Analysis` classes of the previous tutorial.
@@ -220,20 +219,23 @@ for dataset_name in dataset_names:
     analysis = Analysis(data=data, noise_map=noise_map)
 
     """
-    In all examples so far, results have gone to the default output path, which was the `autofit_workspace/output` 
-    folder and a folder named after the non linear search. In this example, we will repeat this process and then load
-    these results into the database and a `database_howtofit.sqlite` file.
+    In all examples so far, results were wrriten to the `autofit_workspace/output` folder with a path and folder 
+    named after the non-linear search.
 
-    However, results can be written directly to the `database_howtofit.sqlite` file omitted hard-disc output entirely, 
-    which can be important for performing large model-fitting tasks on high performance computing facilities where 
-    there may be limits on the number of files allowed. The commented out code below shows how one would perform
-    direct output to the `.sqlite` file. 
+    In this example, results are written directly to the `database.sqlite` file after the model-fit is complete and 
+    only stored in the output folder during the model-fit. This can be important for performing large model-fitting 
+    tasks on high performance computing facilities where there may be limits on the number of files allowed, or there
+    are too many results to make navigating the output folder manually feasible.
 
-    [NOTE: direct writing to .sqlite not supported yet, so this fit currently outputs to hard-disc as per usual and
-    these outputs will be used to make the database.]
+    The `unique_tag` uses the `dataset_name` name below to generate the unique identifier, which in other examples we 
+    have seen is also generated depending on the search settings and model. In this example, all three model fits
+    use an identical search and model, so this `unique_tag` is key in ensuring 3 separate sets of results for each
+    model-fit are stored in the output folder and written to the .sqlite database. 
     """
     dynesty = af.DynestyStatic(
-        path_prefix=path.join("howtofit", "chapter_database", dataset_name)
+        path_prefix=path.join("howtofit", "chapter_database", dataset_name),
+        unique_tag=dataset_name,  # This makes the unique identifier use the dataset name
+        session=session,  # This instructs the search to write to the .sqlite database.
     )
 
     print(
@@ -246,7 +248,8 @@ for dataset_name in dataset_names:
     dynesty.fit(model=model, analysis=analysis, info=info)
 
 """
-Checkout the output folder, you should see three new sets of results corresponding to our 3 `Gaussian` datasets.
+Checkout the output folder, during the model-fits you should see three new sets of results corresponding to 
+our 3 `Gaussian` datasets. If the model-fits are already complete, you will only see the .sqlite database file.
 
 This completes tutorial 1, which was less of a tutorial and more a quick exercise in getting the results of three 
 model-fits onto our hard-disc to demonstrate **PyAutoFit**'s database feature!

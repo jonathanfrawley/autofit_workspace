@@ -138,7 +138,9 @@ for dataset_name in dataset_names:
     analysis = Analysis(data=data, noise_map=noise_map)
 
     emcee = af.DynestyStatic(
-        name=dataset_name, path_prefix=path.join("howtofit", "tutorial_1_global_model")
+        path_prefix=path.join("howtofit", "chapter_graphical_models"),
+        name="tutorial_1_global_model",
+        unique_tag=dataset_name,
     )
 
     print(
@@ -160,7 +162,7 @@ parameters) have much larger errors than other **PyAutoFit** examples due to the
 We now load the results of all 3 model-fits using the `Aggregator`, so we can try determine the global `centre` value.
 """
 agg = af.Aggregator(
-    directory=path.join("output", "howtofit", "tutorial_1_global_model")
+    directory=path.join("output", "howtofit", "chapter_graphical_models", "tutorial_1_global_model")
 )
 
 """

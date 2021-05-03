@@ -43,15 +43,15 @@ plt.close()
 """
 __Model__
 
-Next, we create our model, which in this case corresponds to a `Gaussian` + Exponential. In model.py, you will have
+Next, we create our model, which in this case corresponds to a `Gaussian` + `Exponential`. In model.py, you will have
 noted the `Gaussian` has 3 parameters (centre, intensity and sigma) and Exponential 3 parameters (centre, intensity and
 rate). These are the free parameters of our model that the `NonLinearSearch` fits for, meaning the non-linear
 parameter space has dimensionality = 6.
 
-In the simple example tutorial, we used a `Model` to create the model of the Gaussian. Models cannot be used to
-compose models from multiple model components and for this example we must instead use the Collection.
+In the complex example tutorial, we used a `Model` to create and customize the `Gaussian` and `Exponential` models.
 """
-model = af.Collection(gaussian=m.Gaussian, exponential=m.Exponential)
+gaussian = af.Model(m.Gaussian)
+exponential = af.Model(m.Exponential)
 
 """
 Checkout `autofit_workspace/config/priors/model.json`, this config file defines the default priors of the `Gaussian` 
@@ -59,53 +59,57 @@ and `Exponential` model components.
 
 We can manually customize the priors of our model used by the non-linear search.
 """
-model.gaussian.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
-model.gaussian.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=1e2)
-model.gaussian.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=30.0)
-model.exponential.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
-model.exponential.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=1e2)
-model.exponential.rate = af.UniformPrior(lower_limit=0.0, upper_limit=10.0)
+gaussian.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
+gaussian.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=1e2)
+gaussian.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=30.0)
+exponential.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
+exponential.intensity = af.UniformPrior(lower_limit=0.0, upper_limit=1e2)
+exponential.rate = af.UniformPrior(lower_limit=0.0, upper_limit=10.0)
+
+"""
+We can now compose the overall model using a `Collection`, which takes the model components we defined above.
+"""
+model = af.Collection(gaussian=gaussian, exponential=exponential)
 
 """
 Above, we named our model-components: we called the `Gaussian` component `gaussian` and Exponential component
 `exponential`. We could have chosen anything for these names, as shown by the code below.
 """
 model_custom_names = af.Collection(
-    custom_name=m.Gaussian, another_custom_name=m.Exponential
+    custom_name=gaussian, another_custom_name=exponential
 )
 
-model_custom_names.custom_name.centre = af.UniformPrior(
-    lower_limit=0.0, upper_limit=100.0
-)
-model_custom_names.custom_name.intensity = af.UniformPrior(
-    lower_limit=0.0, upper_limit=1e2
-)
-model_custom_names.custom_name.sigma = af.UniformPrior(
-    lower_limit=0.0, upper_limit=30.0
-)
-model_custom_names.another_custom_name.centre = af.UniformPrior(
-    lower_limit=0.0, upper_limit=100.0
-)
-model_custom_names.another_custom_name.intensity = af.UniformPrior(
-    lower_limit=0.0, upper_limit=1e2
-)
-model_custom_names.another_custom_name.rate = af.UniformPrior(
-    lower_limit=0.0, upper_limit=10.0
-)
+print(model_custom_names.custom_name)
+print(model_custom_names.another_custom_name)
 
 """
-The naming of model components is important - as these names will are adotped by the instance pass to the Analysis
+The naming of model components is important, as these names will are adopted by the instance passed to the `Analysis`
 class and the results returned by the non-linear search.
-
-we'll use the `model` variable from here on, with the more sensible names of `gaussian` and `exponential`.
 
 __Analysis__
 
 We now set up our Analysis, using the class described in `analysis.py`. The analysis describes how given an instance
-of our model (a `Gaussian` + Exponential) we fit the data and return a log likelihood value. For this simple example,
+of our model (a `Gaussian` + Exponential) we fit the data and return a log likelihood value. For this complex example,
 we only have to pass it the data and its noise-map.
 """
 analysis = a.Analysis(data=data, noise_map=noise_map)
+
+"""
+__Paths__
+
+We specify a `path_prefix` which is passed to the non-linear search below, so that our results go to the 
+folder `autofit_workspace/output/overview/complex`. The search is also given a `name`, which defines the folder
+results are output too.
+
+Results are output to a folder which is a collection of random characters, which is the 'unique_identifier' of
+the model-fit. This identifier is generated based on the model fitted and search used, such that an identical
+combination of model and search generates the same identifier.
+
+This ensures that rerunning an identical fit will use the existing results to resume the model-fit. In contrast, if
+you change the model or search, a new unique identifier will be generated, ensuring that the model-fit results are
+output into a separate folder.
+"""
+path_prefix = path.join("overview", "complex")
 
 """
 #####################
@@ -122,7 +126,8 @@ https://github.com/joshspeagle/dynesty
 https://dynesty.readthedocs.io/en/latest/index.html
 """
 dynesty = af.DynestyStatic(
-    path_prefix=path.join("overview", "complex"),
+    path_prefix=path_prefix,
+    name="DynestyStatic",
     nlive=60,
     bound="multi",
     sample="auto",
@@ -198,7 +203,8 @@ during the run and terminating sampling early if these meet a specified threshol
 (https://emcee.readthedocs.io/en/stable/tutorials/autocorr/#autocorr) for a description of how this is implemented.
 """
 emcee = af.Emcee(
-    path_prefix=path.join("overview", "complex"),
+    path_prefix=path_prefix,
+    name="Emcee",
     nwalkers=50,
     nsteps=2000,
     initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
@@ -261,7 +267,8 @@ as providing different options for the initial distribution of particles.
 
 """
 pso = af.PySwarmsLocal(
-    path_prefix=path.join("overview", "complex"),
+    path_prefix=path_prefix,
+    name="PySwarmsLocal",
     n_particles=100,
     iters=1000,
     cognitive=0.5,

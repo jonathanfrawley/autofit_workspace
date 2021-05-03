@@ -155,7 +155,7 @@ model.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=50.0)
 analysis = Analysis(data=data, noise_map=noise_map)
 
 emcee = af.Emcee(
-    name="tutorial_3_non_linear_search", path_prefix=path.join("howtofit", "chapter_1")
+    path_prefix=path.join("howtofit", "chapter_1"), name="tutorial_3_non_linear_search"
 )
 
 """
@@ -165,7 +165,21 @@ for a model-fit). Whilst you're waiting, checkout the folder:
 `autofit_workspace/output/howtofit`
 
 Here, the results of the model-fit are output to your hard-disk (on-the-fly) and you can inspect them as the non-linear
-search runs. In particular, you'll find:
+search runs. 
+
+__Unique Identifier__
+
+In the output folder, you will note that results are in a folder which is a collection of random characters. This acts 
+as a `unique_identifier` of the model-fit, where this identifier is generated based on the model and search that are 
+used in the fit.
+ 
+An identical combination of model and search generates the same identifier, meaning that rerunning the
+script will use the existing results to resume the model-fit. In contrast, if you change the model or search,
+a new unique identifier will be generated, ensuring that the model-fit results are output into a separate folder. 
+
+__Contents__
+
+In particular, you'll find (in a folder that is a random string of characters):
 
  - `model.info`: A file listing every model component, parameter and prior in your model-fit.
 

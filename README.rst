@@ -11,11 +11,11 @@ PyAutoFit Workspace
 
 `Installation Guide <https://pyautofit.readthedocs.io/en/latest/installation/overview.html>`_ |
 `readthedocs <https://pyautofit.readthedocs.io/en/latest/index.html>`_ |
-`Introduction on Binder <https://mybinder.org/v2/gh/Jammy2211/autofit_workspace/7a002d90ad3f5573ced6fa5d16f50bb71ad3e4a3?filepath=introduction.ipynb>`_ |
+`Introduction on Binder <https://mybinder.org/v2/gh/Jammy2211/autofit_workspace/master?filepath=introduction.ipynb>`_ |
 `HowToFit <https://pyautofit.readthedocs.io/en/latest/howtofit/howtofit.html>`_
 
 Welcome to the **PyAutoFit** Workspace. You can get started right away by going to the `autofit workspace
-Binder <https://mybinder.org/v2/gh/Jammy2211/autofit_workspace/7a002d90ad3f5573ced6fa5d16f50bb71ad3e4a3?filepath=introduction.ipynb>`_.
+Binder <https://mybinder.org/v2/gh/Jammy2211/autofit_workspace/master?filepath=introduction.ipynb>`_.
 Alternatively, you can get set up by following the installation guide on our `readthedocs <https://pyautofit.readthedocs.io>`_.
 
 Getting Started
@@ -52,7 +52,9 @@ The workspace includes the following main directories:
 The examples in the notebooks and scripts folders are structured as follows:
 
 - ``overview`` - Examples using **PyAutoFit** to compose and fit a model to data via a non-linear search.
-- ``howtofit`` - Detailed step-by-step tutorials
+- ``howtofit`` - Detailed step-by-step tutorials.
+- ``searches`` - Example scripts of every non-linear search supported by **PyAutoFit**.
+- ``plot`` - An API reference guide for **PyAutoFits**'s plotting tools.
 - ``features`` - Examples of **PyAutoFit**'s advanced modeling features.
 
 Getting Started

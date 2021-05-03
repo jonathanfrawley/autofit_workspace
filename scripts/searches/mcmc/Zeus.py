@@ -2,12 +2,12 @@
 Searches: DynestyStatic
 =======================
 
-This example illustrates how to use the MCMC ensamble sampler algorithm Emcee.
+This example illustrates how to use the MCMC ensamble sampler algorithm Zeus.
 
-Information about Emcee can be found at the following links:
+Information about Zeus can be found at the following links:
 
-  - https://github.com/dfm/emcee
- - https://emcee.readthedocs.io/en/stable/
+ - https://github.com/minaskar/zeus
+ - https://zeus-mcmc.readthedocs.io/en/latest/
 """
 # %matplotlib inline
 # from pyprojroot import here
@@ -62,17 +62,18 @@ analysis = a.Analysis(data=data, noise_map=noise_map)
 """
 __Search__
 
-We now create and run the `Emcee` object which acts as our non-linear search. 
+We now create and run the `Zeus` object which acts as our non-linear search. 
 
-We manually specify all of the Emcee settings, descriptions of which are provided at the following webpage:
+We manually specify all of the Zeus settings, descriptions of which are provided at the following webpage:
 
- https://emcee.readthedocs.io/en/stable/user/sampler/
- https://emcee.readthedocs.io/en/stable/
+ https://zeus-mcmc.readthedocs.io/en/latest/
+ https://zeus-mcmc.readthedocs.io/en/latest/api/sampler.html
 """
-emcee = af.Emcee(
-    path_prefix=path.join("overview", "simple", "fit"),
+zeus = af.Zeus(
+    path_prefix="searches",
+    name="Zeus",
     nwalkers=30,
-    nsteps=100000,
+    nsteps=1001,
     initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
     auto_correlations_settings=af.AutoCorrelationsSettings(
         check_for_convergence=True,
@@ -80,11 +81,21 @@ emcee = af.Emcee(
         required_length=50,
         change_threshold=0.01,
     ),
-    iterations_per_update=500,
+    tune=False,
+    tolerance=0.05,
+    patience=5,
+    maxsteps=10000,
+    mu=1.0,
+    maxiter=10000,
+    vectorize=False,
+    check_walkers=True,
+    shuffle_ensemble=True,
+    light_mode=False,
+    iterations_per_update=501,
     number_of_cores=1,
 )
 
-result = emcee.fit(model=model, analysis=analysis)
+result = zeus.fit(model=model, analysis=analysis)
 
 """
 __Result__
