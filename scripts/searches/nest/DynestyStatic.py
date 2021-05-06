@@ -71,7 +71,7 @@ We manually specify all of the Dynesty settings, descriptions of which are provi
 """
 dynesty = af.DynestyStatic(
     path_prefix="searches",
-    name="DynestyStatic",
+    name="DynestyStatic2",
     nlive=50,
     bound="multi",
     sample="auto",
@@ -85,8 +85,8 @@ dynesty = af.DynestyStatic(
     slices=5,
     fmove=0.9,
     max_move=100,
-    iterations_per_update=500,
-    number_of_cores=2,
+    iterations_per_update=2500,
+    number_of_cores=1,
 )
 
 result = dynesty.fit(model=model, analysis=analysis)

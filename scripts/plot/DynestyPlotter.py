@@ -50,20 +50,44 @@ samples = result.samples
 """
 We now pass the samples to a `SamplesPlotter` and call various `figure_*` methods to plot different plots.
 """
-samples_plotter = aplt.DynestyPlotter(samples=samples)
-samples_plotter.figures()
+dynesty_plotter = aplt.DynestyPlotter(samples=samples)
 
 """
-The plotter includes corner plots, using the library corner.py, which summarize the posterior of the results.
+The plotter wraps the `cornerplot` method of the inbuilt Dynesty visualization:
+
+ - https://dynesty.readthedocs.io/en/latest/quickstart.html
+ -  - https://dynesty.readthedocs.io/en/latest/api.html#module-dynesty.plotting
 """
-samples_plotter.figures(cornerplot=True)
-stop
+dynesty_plotter.cornerplot()
 
 """
-There are various `figure_*` methods to plot different plots that summarize the quality, speed and results of the 
-model-fit.
+We can use the `kwargs` of this function to pass in any of the input parameters, according the API docs 
+of `dynesty`:
+
+ - https://dynesty.readthedocs.io/en/latest/api.html#module-dynesty.plotting
 """
-samples_plotter.figures_1d(progress=True)
+dynesty_plotter.cornerplot(
+    dims=None,
+    span=None,
+    quantiles=[0.025, 0.5, 0.975],
+    color='black',
+    smooth=0.02,
+    quantiles_2d=None,
+    hist_kwargs=None,
+    hist2d_kwargs=None,
+    label_kwargs=None,
+    show_titles=False,
+    title_fmt=".2f",
+    title_kwargs=None,
+    truths=None,
+    truth_color='red',
+    truth_kwargs=None,
+    max_n_ticks=5,
+    top_ticks=False,
+    use_math_text=False,
+    verbose=False,
+)
+
 
 """
 Finish.
