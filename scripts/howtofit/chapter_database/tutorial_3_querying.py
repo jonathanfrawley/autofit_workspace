@@ -13,6 +13,7 @@ tutorial, we'll learn how query the database and load only the results that we w
 # %cd $workspace_path
 # print(f"Working Directory has been set to `{workspace_path}`")
 
+import autofit as af
 from os import path
 
 import profiles as p
@@ -24,9 +25,7 @@ Below, we also filter results to only include completed results  by including th
 results were present in the database that were in the middle of an unfinished `NonLinearSearch` they would be omitted 
 and not loaded, albeit for this tutorial all 3 of our model-fits had completed anyway!
 """
-from autofit.database.aggregator import Aggregator
-
-agg = Aggregator.from_database("database_howtofit.sqlite", completed_only=True)
+agg = af.Aggregator.from_database("database_howtofit.sqlite", completed_only=True)
 
 """
 First, lets print the number of `Samples` objects the `Aggregator` finds. As in the previous tutorial, we should find 

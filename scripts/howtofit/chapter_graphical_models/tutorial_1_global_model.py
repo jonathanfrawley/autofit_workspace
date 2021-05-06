@@ -162,7 +162,9 @@ parameters) have much larger errors than other **PyAutoFit** examples due to the
 We now load the results of all 3 model-fits using the `Aggregator`, so we can try determine the global `centre` value.
 """
 agg = af.Aggregator(
-    directory=path.join("output", "howtofit", "chapter_graphical_models", "tutorial_1_global_model")
+    directory=path.join(
+        "output", "howtofit", "chapter_graphical_models", "tutorial_1_global_model"
+    )
 )
 
 """

@@ -54,7 +54,7 @@ We create the model and analysis, which in this example is a single `Gaussian` a
 model = af.Model(m.Gaussian)
 
 model.centre = af.UniformPrior(lower_limit=0.0, upper_limit=100.0)
-model.intensity = af.LogUniformPrior(lower_limit=1e-2, upper_limit=1e2)
+model.intensity = af.UniformPrior(lower_limit=1e-2, upper_limit=1e2)
 model.sigma = af.UniformPrior(lower_limit=0.0, upper_limit=30.0)
 
 analysis = a.Analysis(data=data, noise_map=noise_map)

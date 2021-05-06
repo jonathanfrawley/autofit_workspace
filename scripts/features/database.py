@@ -97,18 +97,19 @@ for dataset_name in dataset_names:
     analysis = a.Analysis(data=data, noise_map=noise_map)
 
     """
-    In all examples so far, results were wrriten to the `autofit_workspace/output` folder with a path and folder 
-    named after the non-linear search.
+    In all examples so far, results were written to the `autofit_workspace/output` folder with a path and folder 
+    named after a unique identifier, which was derived from the non-linear search and model. This unique identifier
+    plays a vital role in the database: it is used to ensure every entry in the database is unique. 
     
     In this example, results are written directly to the `database.sqlite` file after the model-fit is complete and 
     only stored in the output folder during the model-fit. This can be important for performing large model-fitting 
     tasks on high performance computing facilities where there may be limits on the number of files allowed, or there
     are too many results to make navigating the output folder manually feasible.
     
-    The `unique_tag` uses the `dataset_name` name below to generate the unique identifier, which in other examples we 
-    have seen is also generated depending on the search settings and model. In this example, all three model fits
-    use an identical search and model, so this `unique_tag` is key in ensuring 3 separate sets of results for each
-    model-fit are stored in the output folder and written to the .sqlite database. 
+    The `unique_tag` below uses the `dataset_name` to alter the unique identifier, which as we have seen is also 
+    generated depending on the search settings and model. In this example, all three model fits use an identical 
+    search and model, so this `unique_tag` is key for ensuring 3 separate sets of results for each model-fit are 
+    stored in the output folder and written to the .sqlite database. 
     """
     emcee = af.Emcee(
         path_prefix=path.join("features", "database"),
@@ -131,9 +132,7 @@ for dataset_name in dataset_names:
         f"few minutes!"
     )
 
-    result = emcee.fit(
-        model=model, analysis=analysis, dataset_name=dataset_name, info=info
-    )
+    result = emcee.fit(model=model, analysis=analysis, info=info)
 
 print("Emcee has finished run - you may now continue the notebook.")
 
@@ -141,9 +140,7 @@ print("Emcee has finished run - you may now continue the notebook.")
 First, note how the results are not contained in the `output` folder after each search completes. Instead, they are
 contained in the `database.sqlite` file, which we can load using the `Aggregator`.
 """
-from autofit.database.aggregator import Aggregator
-
-agg = Aggregator.from_database("database.sqlite")
+agg = af.Aggregator.from_database("database.sqlite")
 
 """
 Before using the aggregator to inspect results, let me quickly cover Python generators. A generator is an object that 

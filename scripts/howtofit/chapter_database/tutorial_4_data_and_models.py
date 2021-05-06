@@ -19,9 +19,7 @@ import autofit as af
 """
 We begin by loading the database via the `.sqlite` file as we did in the previous tutorial. 
 """
-from autofit.database.aggregator import Aggregator
-
-agg = Aggregator.from_database("database_howtofit.sqlite", completed_only=True)
+agg = af.Aggregator.from_database("database_howtofit.sqlite", completed_only=True)
 
 """
 We'll reuse the `plot_line` function of previous tutorials, however it now displays to the notebook as opposed to

@@ -21,9 +21,7 @@ import autofit as af
 First, note how the results are not contained in the `output` folder after each search completes. Instead, they are
 contained in the `database_howtofit.sqlite` file, which we can load using the `Aggregator`.
 """
-from autofit.database.aggregator import Aggregator
-
-agg = Aggregator.from_database("database_howtofit.sqlite")
+agg = af.Aggregator.from_database("database_howtofit.sqlite")
 
 """
 Before using the aggregator to inspect results, let me quickly cover Python generators. A generator is an object that 
