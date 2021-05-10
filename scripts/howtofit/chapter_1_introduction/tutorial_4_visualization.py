@@ -83,7 +83,10 @@ In the previous tutorial, we created an `Analysis` class, which defined how our 
 `log_likelihood` to perform the model-fit.
 
 To perform on-the-fly visualization, we simply extend the `Analysis` class with a new method, `visualize`, where
-visualization is performed using the `plot_line` function above.
+visualization is performed using the `plot_line` function above. 
+
+Visualization of the properties of the search,such as the corner plot of the PDF, are also automatically output during 
+the model-fit on the fly.
 """
 
 

@@ -11,6 +11,7 @@ see how the fit is performed by the code below. The first section of code below 
 #%matplotlib inline
 
 import autofit as af
+import autofit.plot as aplt
 import model as m
 import analysis as a
 
@@ -59,7 +60,9 @@ pass it the data and its noise-map.
 """
 analysis = a.Analysis(data=data, noise_map=noise_map)
 
-"""Returns the non-linear object for emcee and perform the fit."""
+"""
+Returns the non-linear object for emcee and perform the fit.
+"""
 emcee = af.Emcee(
     nwalkers=30,
     nsteps=1000,
@@ -87,13 +90,13 @@ the parameter index.
 samples = result.samples
 
 print("Final 10 Parameters:")
-print(samples.parameters[-10:])
+print(samples.parameter_lists[-10:])
 
 print("Sample 10`s third parameter value (Gaussian -> sigma)")
-print(samples.parameters[9][2], "\n")
+print(samples.parameter_lists[9][2], "\n")
 
 """
-The Samples class also contains the log likelihood, log prior, log posterior and weights of every accepted sample, 
+The Samples class also contains the log likelihood, log prior, log posterior and weight_list of every accepted sample, 
 where:
 
    - The log likelihood is the value evaluated from the likelihood function (e.g. -0.5 * chi_squared + the noise 
@@ -110,16 +113,16 @@ where:
 Lets inspect the last 10 values of each for the analysis.     
 """
 print("Final 10 Log Likelihoods:")
-print(samples.log_likelihoods[-10:])
+print(samples.log_likelihood_list[-10:])
 
 print("Final 10 Log Priors:")
-print(samples.log_priors[-10:])
+print(samples.log_prior_list[-10:])
 
 print("Final 10 Log Posteriors:")
-print(samples.log_posteriors[-10:])
+print(samples.log_posterior_list[-10:])
 
 print("Final 10 Sample Weights:")
-print(samples.weights[-10:], "\n")
+print(samples.weight_list[-10:], "\n")
 
 """
 The median pdf vector is readily available from the `Samples` object for you convenience (and if a nested sampling
@@ -198,20 +201,31 @@ plt.ylabel("Profile intensity")
 plt.show()
 plt.close()
 
-"""All methods above are available as an instance:"""
+"""
+All methods above are available as an instance:
+"""
 median_pdf_instance = samples.median_pdf_instance
 instance_at_upper_sigma = samples.instance_at_upper_sigma
 instance_at_lower_sigma = samples.instance_at_lower_sigma
 error_instance_at_upper_sigma = samples.error_instance_at_upper_sigma
 error_instance_at_lower_sigma = samples.error_instance_at_lower_sigma
 
-"""An instance of any accepted sample can be created:"""
+"""
+An instance of any accepted sample can be created:
+"""
 instance = samples.instance_from_sample_index(sample_index=500)
 
 print("Gaussian Instance of sample 5000:")
 print("Centre = ", instance.centre)
 print("Intensity = ", instance.intensity)
 print("Sigma = ", instance.sigma, "\n")
+
+"""
+The Probability Density Functions (PDF's) of the results can be plotted using the Emcee's visualization 
+tool `corner.py`, which is wrapped via the `EmceePlotter` object.
+"""
+emcee_plotter = aplt.EmceePlotter(samples=result.samples)
+emcee_plotter.corner()
 
 """
 If a nested sampling `NonLinearSearch` is used, the evidence of the model is also available which enables Bayesian

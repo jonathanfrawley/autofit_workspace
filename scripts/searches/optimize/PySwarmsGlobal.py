@@ -2,7 +2,7 @@
 Searches: PySwarmsGlobal
 ========================
 
-This example illustrates how to use the particle swarm optimization  algorithm PySwarmsGlobal.
+This example illustrates how to use the particle swarm optimization algorithm PySwarmsGlobal.
 
 Information about PySwarms can be found at the following links:
 

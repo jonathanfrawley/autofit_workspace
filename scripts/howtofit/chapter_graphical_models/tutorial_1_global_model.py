@@ -212,9 +212,9 @@ plt.close()
 #
 # samples = list(agg.values("samples"))
 # print(samples[0].parameters_extract[2])
-# pdf = corner.quantile(x=samples[0].parameters_extract[2], q=np.linspace(0.0, 1.0, 50), weights=samples[0].weights)
+# pdf = corner.quantile(x=samples[0].parameters_extract[2], q=np.linspace(0.0, 1.0, 50), weight_list=samples[0].weight_list)
 # print(pdf)
-# # pdfs = [corner.quantile(x=samps.parameters, q=np.linspace(0.0, 1.0, 20), weights=samps.weights) for samps in samples]
+# # pdfs = [corner.quantile(x=samps.parameters, q=np.linspace(0.0, 1.0, 20), weight_list=samps.weight_list) for samps in samples]
 # #print(pdfs)
 #
 # #plt.show()
@@ -229,19 +229,19 @@ Alternatively, we could combine the samples into a joint set of samples and comp
 samples_gen = agg.values("samples")
 
 parameters_joint = []
-log_likelihoods_joint = []
-log_priors_joint = []
-weights_joint = []
+log_likelihood_list_joint = []
+log_prior_list_joint = []
+weight_list_joint = []
 log_evidence = 0.0
 total_samples = 0
 
 for samples in agg.values("samples"):
 
     model = samples.model
-    parameters_joint += samples.parameters
-    log_likelihoods_joint += samples.log_likelihoods
-    log_priors_joint += samples.log_priors
-    weights_joint += samples.weights
+    parameters_joint += samples.parameter_lists
+    log_likelihood_list_joint += samples.log_likelihood_list
+    log_prior_list_joint += samples.log_prior_list
+    weight_list_joint += samples.weight_list
     number_live_points = samples.number_live_points
     log_evidence += samples.log_evidence
     total_samples += samples.total_samples
@@ -249,9 +249,9 @@ for samples in agg.values("samples"):
 # samples_joint = af.NestSamples(
 #     model=model,
 #     parameters=parameters_joint,
-#     log_likelihoods=log_likelihoods_joint,
-#     log_priors=log_priors_joint,
-#     weights=weights_joint,
+#     log_likelihood_list=log_likelihood_list_joint,
+#     log_prior_list=log_prior_list_joint,
+#     weight_list=weight_list_joint,
 #     number_live_points=number_live_points,
 #     log_evidence=log_evidence,
 #     total_samples=total_samples,

@@ -8,6 +8,7 @@ If you haven't already, you should checkout the files `example/model.py` and `ex
 provided PyAutoFit with the necessary information on our model, data and log likelihood function.
 """
 import autofit as af
+import autofit.plot as aplt
 import model as m
 import analysis as a
 
@@ -149,6 +150,13 @@ plt.show()
 plt.close()
 
 """
+The Probability Density Functions (PDF's) of the results can be plotted using Dynesty's in-built visualization tools, 
+which are wrapped via the `DynestyPlotter` object.
+"""
+dynesty_plotter = aplt.DynestyPlotter(samples=result.samples)
+dynesty_plotter.cornerplot()
+
+"""
 We discuss in more detail how to use a results object in the files `autofit_workspace/example/simple/result.py`.
 
 ##################
@@ -207,6 +215,13 @@ plt.show()
 plt.close()
 
 """
+The Probability Density Functions (PDF's) of the results can be plotted using the Emcee's visualization 
+tool `corner.py`, which is wrapped via the `EmceePlotter` object.
+"""
+emcee_plotter = aplt.EmceePlotter(samples=result.samples)
+emcee_plotter.corner()
+
+"""
 ############################
 ###### PARTICLE SWARM ######
 ############################
@@ -257,6 +272,13 @@ plt.xlabel("x values of profile")
 plt.ylabel("Profile intensity")
 plt.show()
 plt.close()
+
+"""
+The results can be plotted using the PySwarm's in-built visualization tools which are wrapped via 
+the `PySwarmsPlotter` object.
+"""
+pyswarms_plotter = aplt.PySwarmsPlotter(samples=result.samples)
+pyswarms_plotter.cost_history()
 
 """
 __Other Samplers__

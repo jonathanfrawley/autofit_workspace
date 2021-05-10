@@ -183,12 +183,12 @@ The parameters are stored as a list of lists, where:
 """
 samples = result.samples
 print("Sample 50's second parameter value (Gaussian -> intensity):")
-print(samples.parameters[49][1])
+print(samples.parameter_lists[49][1])
 print("Sample 10`s third parameter value (Gaussian -> sigma)")
-print(samples.parameters[9][2], "\n")
+print(samples.parameter_lists[9][2], "\n")
 
 """
-The `Samples` class also contains the `log_likelihoods`, `log_priors`, `log_posteriors` and `weights` of every 
+The `Samples` class also contains the `log_likelihood_list`, `log_prior_list`, `log_posterior_list` and `weight_list` of every 
 accepted sample, where:
 
  - A `log_likelihood` is the value evaluated from the `log_likelihood_function` (e.g. -0.5 * `chi_squared` + the 
@@ -199,22 +199,22 @@ accepted sample, where:
 
  - The `log_posterior` is `log_likelihood` + `log_prior`.
 
- - The `weights` gives information on how samples should be combined to estimate the posterior. The values 
+ - The `weight_list` gives information on how samples should be combined to estimate the posterior. The values 
    depend on the `NonLinearSearch` used, for MCMC samples they are all 1 (e.g. all weighted equally).
    
 Lets inspect the last 10 values of each for the analysis.
 """
 print("Final 10 Log Likelihoods:")
-print(samples.log_likelihoods[-10:])
+print(samples.log_likelihood_list[-10:])
 
 print("Final 10 Log Priors:")
-print(samples.log_priors[-10:])
+print(samples.log_prior_list[-10:])
 
 print("Final 10 Log Posteriors:")
-print(samples.log_posteriors[-10:])
+print(samples.log_posterior_list[-10:])
 
 print("Final 10 Sample Weights:")
-print(samples.weights[-10:], "\n")
+print(samples.weight_list[-10:], "\n")
 
 """
 The `Samples` contain many useful vectors, including the the maximum log likelihood and posterior values:
@@ -354,8 +354,8 @@ have to use the libraries yourself!).
 import corner
 
 corner.corner(
-    xs=samples.parameters,
-    weights=samples.weights,
+    xs=samples.parameter_lists,
+    weight_list=samples.weight_list,
     labels=samples.model.parameter_labels,
 )
 

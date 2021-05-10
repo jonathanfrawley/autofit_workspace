@@ -24,8 +24,8 @@ A full description of PyAutoFit's database tools is provided in the database cha
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import autofit as af
+import autofit.plot as aplt
 
-import os
 from os import path
 import numpy as np
 
@@ -179,9 +179,9 @@ Refer to `result.py` for all the properties that are accessible via the `Aggrega
 """
 for samples in agg.values("samples"):
     print("All parameters of the very first sample")
-    print(samples.parameters[0])
+    print(samples.parameter_lists[0])
     print("The tenth sample`s third parameter")
-    print(samples.parameters[9][2], "\n")
+    print(samples.parameter_lists[9][2], "\n")
 
 """
 __Querying__
@@ -251,6 +251,15 @@ print(
     len(list(samples_gen)),
     "\n",
 )
+
+"""
+The Probability Density Functions (PDF's) of the every model-fit can be plotted using the Emcee's visualization 
+tool `corner.py`, which is wrapped via the `EmceePlotter` object.
+"""
+for samples in agg.values("samples"):
+
+    emcee_plotter = aplt.EmceePlotter(samples=samples)
+    emcee_plotter.corner()
 
 """
 The API for querying is fairly self explanatory. Through the combination of info based queries, model based

@@ -49,6 +49,7 @@ https://towardsdatascience.com/a-zero-math-introduction-to-markov-chain-monte-ca
 # print(f"Working Directory has been set to `{workspace_path}`")
 
 import autofit as af
+import autofit.plot as aplt
 from os import path
 import matplotlib.pyplot as plt
 import numpy as np
@@ -242,8 +243,8 @@ print(result.samples)
 This object acts as an interface between the `Emcee` output results on your hard-disk and this Python code. For
 example, we can use it to get the parameters and log likelihood of an accepted emcee sample.
 """
-print(result.samples.parameters[10][:])
-print(result.samples.log_likelihoods[10])
+print(result.samples.parameter_lists[10][:])
+print(result.samples.log_likelihood_list[10])
 
 """
 We can also use it to get a model instance of the `median_pdf` model, which is the model where each parameter is
@@ -257,5 +258,21 @@ print("Intensity = ", mp_instance.intensity)
 print("Sigma = ", mp_instance.sigma)
 
 """
+The Probability Density Functions (PDF's) of the results can be plotted using the Emcee's visualization 
+tool `corner.py`, which is wrapped via the `EmceePlotter` object.
+
+The PDF shows the 1D and 2D probabilities estimated for every parameter after the model-fit. The two dimensional 
+figures can show the degeneracies between different parameters, for example how increasing $\sigma$ and decreasing 
+the intensity $I$ can lead to similar likelihoods and probabilities.
+"""
+emcee_plotter = aplt.EmceePlotter(samples=result.samples)
+emcee_plotter.corner()
+
+"""
+The PDF figure above can be seen to have labels for all parameters, whereby sigma appears as a sigma symbol, the
+intensity is `I`, and centre is `x`. This is set via the config file `config/notation/label.ini`. When you write
+your own model-fitting code with PyAutoFit, you can update this config file so your PDF's automatically have the
+correct labels.
+
 we'll come back to the `Samples` objects in tutorial 6!
 """

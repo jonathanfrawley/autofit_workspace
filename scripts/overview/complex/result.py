@@ -14,6 +14,7 @@ attributes in full, and instead only focus on how the use of a more complex mode
 #%matplotlib inline
 
 import autofit as af
+import autofit.plot as aplt
 import model as m
 import analysis as a
 
@@ -94,9 +95,9 @@ dimensionality of the model has increased from N=3 to N=6.
 """
 samples = result.samples
 print("All Parameters:")
-print(samples.parameters)
+print(samples.parameter_lists)
 print("Sample 10`s sixth parameter value (Exponential -> rate)")
-print(samples.parameters[9][5], "\n")
+print(samples.parameter_lists[9][5], "\n")
 
 """
 The vectors containing models have the same meaning as before, but they are also now of size 6 given the increase in
