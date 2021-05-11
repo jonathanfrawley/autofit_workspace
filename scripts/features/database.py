@@ -162,6 +162,7 @@ We can now create a `samples` generator of every fit. As we saw in the `result.p
 the `Samples` class acts as an interface to the results of the non-linear search.
 """
 samples_gen = agg.values("samples")
+### FOR RICH - Can you make this use the samples via an aggrergator query rather than a pickled object? ###
 
 """
 When we convert this generator to a list and it, the outputs are 3 different MCMCSamples instances. These correspond to 
