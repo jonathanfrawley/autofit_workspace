@@ -193,8 +193,8 @@ input into the model-fit above.
 By querying using the string `gaussian_x1_1` the model-fit to only the second `Gaussian` dataset is returned:
 """
 # Feature Missing
-
-# agg_query = agg.query(agg.directory.contains("gaussian_x1_1"))
+unique_tag = agg.unique_tag
+agg_query = agg.query(unique_tag == "gaussian_x1_1")
 # samples_gen = agg_query.values("samples")
 
 """
@@ -202,6 +202,8 @@ As expected, this list now has only 1 MCMCSamples corresponding to the second da
 """
 print(samples_gen)
 print("Total Samples Objects via dataset_name Query = ", len(list(samples_gen)), "\n")
+
+### FOR RICH - THIS SHOULD BE EQUAL TO ONE ##
 
 """
 We can also query based on the model fitted. 
@@ -236,6 +238,8 @@ print(
     len(list(samples_gen)),
     "\n",
 )
+
+### FOR RICH - THIS SHOULD BE EQUAL TO THREE (All sigmals are below 3.0) ##
 
 """
 Advanced queries can be constructed using logic, for example we below we combine the two queries above to find all
