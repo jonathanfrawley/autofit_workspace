@@ -354,7 +354,7 @@ have to use the libraries yourself!).
 import corner
 
 corner.corner(
-    xs=samples.parameter_lists,
+    data=samples.parameter_lists,
     weight_list=samples.weight_list,
     labels=samples.model.parameter_labels,
 )

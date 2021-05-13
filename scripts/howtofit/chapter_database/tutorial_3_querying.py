@@ -25,7 +25,10 @@ Below, we also filter results to only include completed results  by including th
 results were present in the database that were in the middle of an unfinished `NonLinearSearch` they would be omitted 
 and not loaded, albeit for this tutorial all 3 of our model-fits had completed anyway!
 """
-agg = af.Aggregator.from_database("database_howtofit.sqlite", completed_only=True)
+agg = af.Aggregator.from_database(
+    path.join("output", "database_howtofit.sqlite"),
+    completed_only=True
+)
 
 """
 First, lets print the number of `Samples` objects the `Aggregator` finds. As in the previous tutorial, we should find 
@@ -43,9 +46,9 @@ By querying using the string `gaussian_x1_1` the model-fit to only the second `G
 """
 # FEature Missing
 
-# agg_query = agg.query(agg.directory.contains("gaussian_x1_1"))
-# samples_gen = agg_query.values("samples")
-samples_gen = agg.values("samples")
+unique_tag = agg.unique_tag
+agg_query = agg.query(unique_tag == "gaussian_x1_1")
+samples_gen = agg_query.values("samples")
 
 print(samples_gen)
 print("Total Samples Objects via dataset_name Query = ", len(list(samples_gen)), "\n")

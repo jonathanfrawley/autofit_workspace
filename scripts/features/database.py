@@ -80,7 +80,7 @@ session = af.db.open_database("database.sqlite")
 """
 This for loop runs over every dataset, checkout the comments below for how we set up the database entry of each fit.
 
-Note how the `session` is passed to the `Emcee` search.
+Note how the `session` is passed to the `Dynesty` search.
 """
 for dataset_name in dataset_names:
 
@@ -111,36 +111,27 @@ for dataset_name in dataset_names:
     search and model, so this `unique_tag` is key for ensuring 3 separate sets of results for each model-fit are 
     stored in the output folder and written to the .sqlite database. 
     """
-    emcee = af.Emcee(
+    dynesty = af.DynestyStatic(
         path_prefix=path.join("features", "database"),
         unique_tag=dataset_name,  # This makes the unique identifier use the dataset name
         session=session,  # This instructs the search to write to the .sqlite database.
-        nwalkers=30,
-        nsteps=1000,
-        initializer=af.InitializerBall(lower_limit=0.49, upper_limit=0.51),
-        auto_correlations_settings=af.AutoCorrelationsSettings(
-            check_for_convergence=True,
-            check_size=100,
-            required_length=50,
-            change_threshold=0.01,
-        ),
-        number_of_cores=1,
+        nlive=50,
     )
 
     print(
-        f"Emcee has begun running. This Jupyter notebook cell with progress once Emcee has completed, this could take a "
+        f"Dynesty has begun running. This Jupyter notebook cell with progress once Dynesty has completed, this could take a "
         f"few minutes!"
     )
 
-    result = emcee.fit(model=model, analysis=analysis, info=info)
+    result = dynesty.fit(model=model, analysis=analysis, info=info)
 
-print("Emcee has finished run - you may now continue the notebook.")
+print("Dynesty has finished run - you may now continue the notebook.")
 
 """
 First, note how the results are not contained in the `output` folder after each search completes. Instead, they are
 contained in the `database.sqlite` file, which we can load using the `Aggregator`.
 """
-agg = af.Aggregator.from_database("database.sqlite")
+agg = af.Aggregator.from_database(path.join("output", "database.sqlite"))
 
 """
 Before using the aggregator to inspect results, let me quickly cover Python generators. A generator is an object that 
@@ -162,13 +153,12 @@ We can now create a `samples` generator of every fit. As we saw in the `result.p
 the `Samples` class acts as an interface to the results of the non-linear search.
 """
 samples_gen = agg.values("samples")
-### FOR RICH - Can you make this use the samples via an aggrergator query rather than a pickled object? ###
 
 """
 When we convert this generator to a list and it, the outputs are 3 different MCMCSamples instances. These correspond to 
 the 3 model-fits performed above.
 """
-print("Emcee Samples:\n")
+print("Dynesty Samples:\n")
 print(samples_gen)
 print("Total Samples Objects = ", len(list(samples_gen)), "\n")
 
@@ -193,10 +183,9 @@ input into the model-fit above.
 
 By querying using the string `gaussian_x1_1` the model-fit to only the second `Gaussian` dataset is returned:
 """
-# Feature Missing
 unique_tag = agg.unique_tag
 agg_query = agg.query(unique_tag == "gaussian_x1_1")
-# samples_gen = agg_query.values("samples")
+samples_gen = agg_query.values("samples")
 
 """
 As expected, this list now has only 1 MCMCSamples corresponding to the second dataset.
@@ -204,7 +193,12 @@ As expected, this list now has only 1 MCMCSamples corresponding to the second da
 print(samples_gen)
 print("Total Samples Objects via dataset_name Query = ", len(list(samples_gen)), "\n")
 
-### FOR RICH - THIS SHOULD BE EQUAL TO ONE ##
+"""
+If we query using an incorrect dataset name we get no results:
+"""
+unique_tag = agg.unique_tag
+agg_query = agg.query(unique_tag == "incorrect_name")
+samples_gen = agg_query.values("samples")
 
 """
 We can also query based on the model fitted. 
@@ -240,8 +234,6 @@ print(
     "\n",
 )
 
-### FOR RICH - THIS SHOULD BE EQUAL TO THREE (All sigmals are below 3.0) ##
-
 """
 Advanced queries can be constructed using logic, for example we below we combine the two queries above to find all
 results which fitted a `Gaussian` AND (using the & symbol) inferred a value of sigma less than 3.0. 
@@ -258,13 +250,14 @@ print(
 )
 
 """
-The Probability Density Functions (PDF's) of the every model-fit can be plotted using the Emcee's visualization 
-tool `corner.py`, which is wrapped via the `EmceePlotter` object.
+The Probability Density Functions (PDF's) of the results can be plotted using Dynesty's in-built visualization tools, 
+which are wrapped via the `DynestyPlotter` object.
 """
 for samples in agg.values("samples"):
 
-    emcee_plotter = aplt.EmceePlotter(samples=samples)
-    emcee_plotter.corner()
+    dynesty_plotter = aplt.DynestyPlotter(samples=samples)
+    dynesty_plotter.cornerplot()
+    dynesty_plotter.runplot()
 
 """
 The API for querying is fairly self explanatory. Through the combination of info based queries, model based

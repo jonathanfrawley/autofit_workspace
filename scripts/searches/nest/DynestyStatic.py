@@ -71,7 +71,7 @@ We manually specify all of the Dynesty settings, descriptions of which are provi
 """
 dynesty = af.DynestyStatic(
     path_prefix="searches",
-    name="DynestyStatic2",
+    name="DynestyStatic",
     nlive=50,
     bound="multi",
     sample="auto",

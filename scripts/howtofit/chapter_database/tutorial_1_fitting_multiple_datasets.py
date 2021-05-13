@@ -34,8 +34,10 @@ import matplotlib.pyplot as plt
 """
 We'll reuse the `plot_line` and `Analysis` classes of the previous tutorial.
 
-Note that the `Analysis` class has a new method, `save_attributes_for_aggregator`. This method specifies which properties of the
-fit are output to hard-disc so that we can load them using the `Aggregator` in the next tutorial.
+Note that the `Analysis` class has a new method, `save_attributes_for_aggregator`. This method specifies which 
+properties of the fit are output to hard-disc so that we can load them using the `Aggregator` in the next tutorials.
+
+In particular, note how we output the `data` and `noise_map`, these will be loaded in tutorial 4.
 """
 
 
@@ -157,7 +159,7 @@ class Analysis(af.Analysis):
 
         paths.save_object("data", self.data)
 
-        paths.save_object("data", self.noise_map)
+        paths.save_object("noise_map", self.noise_map)
 
 
 """
